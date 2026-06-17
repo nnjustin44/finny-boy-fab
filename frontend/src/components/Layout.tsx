@@ -70,6 +70,11 @@ export default function Layout({ children }: { children: ReactNode }) {
 						Handcrafted hardwood boards for prep, service, and everyday kitchen
 						rituals.
 					</p>
+					<img
+						className='finn-approved'
+						src='/images/finn-approved.png'
+						alt='Walnut end-grain cutting board'
+					/>
 				</div>
 				<div className='footer-links'>
 					<Link to='/shop'>Shop</Link>

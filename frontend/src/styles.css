@@ -804,6 +804,10 @@ p {
 	font-weight: 800;
 }
 
+.finn-approved {
+	size: 10px;
+}
+
 @media (max-width: 900px) {
 	.site-header {
 		grid-template-columns: 1fr auto;
