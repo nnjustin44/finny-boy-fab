@@ -1,4 +1,4 @@
-import type { Cart, CheckoutResponse, Product } from "../types/store";
+import type { Cart, CartCustomization, CheckoutResponse, Product } from "../types/store";
 
 const jsonHeaders = {
   "Content-Type": "application/json"
@@ -28,24 +28,29 @@ export function getCart(cartId: string) {
   return request<Cart>(`/api/cart/${cartId}`);
 }
 
-export function addCartItem(cartId: string, productId: string, quantity: number) {
+export function addCartItem(
+  cartId: string,
+  productId: string,
+  quantity: number,
+  customization?: CartCustomization
+) {
   return request<Cart>(`/api/cart/${cartId}/items`, {
     method: "POST",
     headers: jsonHeaders,
-    body: JSON.stringify({ productId, quantity })
+    body: JSON.stringify({ productId, quantity, ...customization })
   });
 }
 
-export function updateCartItem(cartId: string, productId: string, quantity: number) {
-  return request<Cart>(`/api/cart/${cartId}/items/${productId}`, {
+export function updateCartItem(cartId: string, lineId: string, quantity: number) {
+  return request<Cart>(`/api/cart/${cartId}/items/${encodeURIComponent(lineId)}`, {
     method: "PATCH",
     headers: jsonHeaders,
     body: JSON.stringify(quantity)
   });
 }
 
-export function removeCartItem(cartId: string, productId: string) {
-  return request<Cart>(`/api/cart/${cartId}/items/${productId}`, {
+export function removeCartItem(cartId: string, lineId: string) {
+  return request<Cart>(`/api/cart/${cartId}/items/${encodeURIComponent(lineId)}`, {
     method: "DELETE"
   });
 }

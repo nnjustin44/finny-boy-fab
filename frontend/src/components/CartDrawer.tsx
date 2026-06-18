@@ -31,16 +31,23 @@ export default function CartDrawer() {
           <>
             <div className="cart-items">
               {cart.items.map((line) => (
-                <article className="cart-line" key={line.product.id}>
+                <article className="cart-line" key={line.id}>
                   <img src={line.product.imageUrl} alt={line.product.name} />
                   <div>
                     <h3>{line.product.name}</h3>
-                    <p>{formatMoney(line.product.priceCents)}</p>
+                    <p>{formatMoney(line.lineTotalCents)}</p>
+                    {(line.selectedWood || line.rubberFeet || line.initialsEngraving) && (
+                      <div className="cart-line-options">
+                        {line.selectedWood && <span>Wood: {line.selectedWood}</span>}
+                        {line.rubberFeet && <span>Rubber feet +$10</span>}
+                        {line.initialsEngraving && <span>Initials: {line.initials}</span>}
+                      </div>
+                    )}
                     <div className="quantity-row">
                       <button
                         type="button"
                         aria-label={`Decrease ${line.product.name} quantity`}
-                        onClick={() => updateItem(line.product.id, line.quantity - 1)}
+                        onClick={() => updateItem(line.id, line.quantity - 1)}
                         disabled={loading}
                       >
                         <Minus size={15} />
@@ -49,7 +56,7 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         aria-label={`Increase ${line.product.name} quantity`}
-                        onClick={() => updateItem(line.product.id, line.quantity + 1)}
+                        onClick={() => updateItem(line.id, line.quantity + 1)}
                         disabled={loading}
                       >
                         <Plus size={15} />
@@ -58,7 +65,7 @@ export default function CartDrawer() {
                         type="button"
                         className="trash-button"
                         aria-label={`Remove ${line.product.name}`}
-                        onClick={() => removeItem(line.product.id)}
+                        onClick={() => removeItem(line.id)}
                         disabled={loading}
                       >
                         <Trash2 size={15} />

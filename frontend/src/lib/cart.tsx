@@ -15,7 +15,7 @@ import {
   removeCartItem,
   updateCartItem
 } from "./api";
-import type { Cart, CheckoutResponse } from "../types/store";
+import type { Cart, CartCustomization, CheckoutResponse } from "../types/store";
 
 const CART_ID_KEY = "finnyboyfab.cartId";
 
@@ -25,9 +25,9 @@ type CartContextValue = {
   loading: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (productId: string, quantity?: number) => Promise<void>;
-  updateItem: (productId: string, quantity: number) => Promise<void>;
-  removeItem: (productId: string) => Promise<void>;
+  addItem: (productId: string, quantity?: number, customization?: CartCustomization) => Promise<void>;
+  updateItem: (lineId: string, quantity: number) => Promise<void>;
+  removeItem: (lineId: string) => Promise<void>;
   checkout: () => Promise<CheckoutResponse>;
 };
 
@@ -67,11 +67,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [ensureCart]);
 
   const addItem = useCallback(
-    async (productId: string, quantity = 1) => {
+    async (productId: string, quantity = 1, customization?: CartCustomization) => {
       setLoading(true);
       try {
         const activeCart = await ensureCart();
-        setCart(await addCartItem(activeCart.id, productId, quantity));
+        setCart(await addCartItem(activeCart.id, productId, quantity, customization));
         setCartOpen(true);
       } finally {
         setLoading(false);
@@ -81,11 +81,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const updateItem = useCallback(
-    async (productId: string, quantity: number) => {
+    async (lineId: string, quantity: number) => {
       setLoading(true);
       try {
         const activeCart = await ensureCart();
-        setCart(await updateCartItem(activeCart.id, productId, quantity));
+        setCart(await updateCartItem(activeCart.id, lineId, quantity));
       } finally {
         setLoading(false);
       }
@@ -94,11 +94,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const removeItem = useCallback(
-    async (productId: string) => {
+    async (lineId: string) => {
       setLoading(true);
       try {
         const activeCart = await ensureCart();
-        setCart(await removeCartItem(activeCart.id, productId));
+        setCart(await removeCartItem(activeCart.id, lineId));
       } finally {
         setLoading(false);
       }

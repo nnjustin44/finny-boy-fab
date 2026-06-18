@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CartItemRequest(
         @NotBlank String productId,
-        @Min(1) @Max(99) int quantity
+        @Min(1) @Max(99) int quantity,
+        String selectedWood,
+        boolean rubberFeet,
+        boolean initialsEngraving,
+        String initials
 ) {
 }

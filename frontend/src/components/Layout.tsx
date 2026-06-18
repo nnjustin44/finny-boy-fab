@@ -73,7 +73,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 					<img
 						className='finn-approved'
 						src='/images/finn-approved.png'
-						alt='Walnut end-grain cutting board'
+						alt='Finn approved'
 					/>
 				</div>
 				<div className='footer-links'>

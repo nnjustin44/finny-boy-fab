@@ -11,19 +11,20 @@ public class ProductRepository {
     private final List<Product> products = List.of(
             new Product(
                     "board-walnut-end-grain",
-                    "walnut-end-grain-board",
-                    "Walnut End-Grain Board",
+                    "generic-end-grain-cutting-board",
+                    "End Grain Cutting Board",
                     "A thick everyday workhorse with a refined kitchen profile.",
-                    "End-grain walnut absorbs knife work beautifully and brings a deep, architectural grain pattern to the counter.",
-                    "Built for cooks who want one board to prep, serve, and leave out between meals. Finished with food-safe oil and wax.",
+                    "Built to endure. Always finished with food-grade coconut oil and beeswax.",
+                    "End-grain cutting boards are gentle on your knives, gold standard for edge retention and durability. Their self-healing surface hides scratches from heavy knife use, making them the perfect choice for serious home chefs.",
                     "/images/walnut-end-grain.png",
-                    "American walnut",
+                    "Maple, cherry, or walnut",
+                    List.of("Maple", "Cherry", "Walnut"),
                     "18 in x 13 in x 1.75 in",
                     18500,
                     8,
                     true,
-                    List.of("End-grain construction", "Soft beveled edges", "Food-safe oil and wax finish", "Rubber feet available on request")
-            ),
+                    List.of("End-grain construction", "Choose maple, cherry, or walnut", "Soft beveled edges",
+                            "Food-safe oil and wax finish")),
             new Product(
                     "board-maple-walnut-server",
                     "maple-walnut-serving-board",
@@ -33,12 +34,12 @@ public class ProductRepository {
                     "Sized for gatherings and weeknight dinners alike, with a comfortable rounded handle and hanging hole.",
                     "/images/maple-walnut-server.png",
                     "Hard maple and walnut",
+                    List.of(),
                     "26 in x 7 in x 0.875 in",
                     12800,
                     12,
                     true,
-                    List.of("Long paddle profile", "Rounded handle", "Hanging hole", "Satin hand-rubbed finish")
-            ),
+                    List.of("Long paddle profile", "Rounded handle", "Hanging hole", "Satin hand-rubbed finish")),
             new Product(
                     "board-cherry-round",
                     "round-cherry-charcuterie-board",
@@ -48,13 +49,13 @@ public class ProductRepository {
                     "A versatile round board for charcuterie, fruit, pastry, or countertop display.",
                     "/images/cherry-round-board.png",
                     "Cherry",
+                    List.of(),
                     "16 in diameter x 1 in",
                     14200,
                     10,
                     false,
-                    List.of("Routed perimeter groove", "Smooth roundover edge", "Food-safe oil and wax finish", "Made for serving and light prep")
-            )
-    );
+                    List.of("Routed perimeter groove", "Smooth roundover edge", "Food-safe oil and wax finish",
+                            "Made for serving and light prep")));
 
     public List<Product> findAll() {
         return products;

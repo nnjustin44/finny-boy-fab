@@ -21,15 +21,17 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="product-card-footer">
           <strong>{formatMoney(product.priceCents)}</strong>
           <div className="product-actions">
-            <button
-              className="icon-button product-cart"
-              type="button"
-              onClick={() => addItem(product.id)}
-              disabled={loading}
-              aria-label={`Add ${product.name} to cart`}
-            >
-              <ShoppingBag size={18} />
-            </button>
+            {(product.woodOptions?.length ?? 0) === 0 && (
+              <button
+                className="icon-button product-cart"
+                type="button"
+                onClick={() => addItem(product.id)}
+                disabled={loading}
+                aria-label={`Add ${product.name} to cart`}
+              >
+                <ShoppingBag size={18} />
+              </button>
+            )}
             <Link className="text-link" to={`/products/${product.slug}`}>
               Details <ArrowRight size={16} />
             </Link>

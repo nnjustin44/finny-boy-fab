@@ -7,6 +7,7 @@ export type Product = {
   story: string;
   imageUrl: string;
   wood: string;
+  woodOptions?: string[];
   dimensions: string;
   priceCents: number;
   inventory: number;
@@ -15,9 +16,22 @@ export type Product = {
 };
 
 export type CartLine = {
+  id: string;
   product: Product;
   quantity: number;
+  selectedWood: string;
+  rubberFeet: boolean;
+  initialsEngraving: boolean;
+  initials: string;
+  addOnTotalCents: number;
   lineTotalCents: number;
+};
+
+export type CartCustomization = {
+  selectedWood?: string;
+  rubberFeet: boolean;
+  initialsEngraving: boolean;
+  initials: string;
 };
 
 export type Cart = {

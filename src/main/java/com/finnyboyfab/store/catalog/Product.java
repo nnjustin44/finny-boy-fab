@@ -11,6 +11,7 @@ public record Product(
         String story,
         String imageUrl,
         String wood,
+        List<String> woodOptions,
         String dimensions,
         int priceCents,
         int inventory,

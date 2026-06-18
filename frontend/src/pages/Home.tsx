@@ -40,13 +40,23 @@ export default function Home() {
 				<div>
 					<p className='eyebrow'>Made for everyday use</p>
 					<h2>Premium hardwood boards proudly made in America.</h2>
+					<img
+						className='american-made-home '
+						src='/images/american-made.png'
+						alt='Finny Boy Fab'
+					/>
 				</div>
-				<p>
+				<p className='intro-paragraph'>
 					Every board begins with hand selected hardwoods for it's grain
 					pattern, beauty, and uniqueness. All boards are meticulously assembled
 					using non-toxic materials and finished with the highest quality
-					food-safe finish. The result is simple, beautiful, and substantial
-					enough to leave on display.
+					food-grade coconut oil and beeswax. The result is simple, beautiful,
+					and substantial enough to leave on display.
+					<br /> <br /> Food is so much more than just what we eat. It's in the
+					quiet breakfast mornings, the loving “Have you eaten?”, the joyful
+					celebrations, and even the gentle times of sorrow. We can’t make the
+					meals for you, but we can make the boards that help hold all those
+					precious moments.
 				</p>
 			</section>
 

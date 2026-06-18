@@ -40,18 +40,18 @@ public class CartController {
         return cartService.addItem(cartId, request);
     }
 
-    @PatchMapping("/{cartId}/items/{productId}")
+    @PatchMapping("/{cartId}/items/{lineId}")
     public CartResponse updateItem(
             @PathVariable String cartId,
-            @PathVariable String productId,
+            @PathVariable String lineId,
             @RequestBody @Min(0) @Max(99) Integer quantity
     ) {
-        return cartService.updateItem(cartId, productId, quantity);
+        return cartService.updateItem(cartId, lineId, quantity);
     }
 
-    @DeleteMapping("/{cartId}/items/{productId}")
-    public CartResponse removeItem(@PathVariable String cartId, @PathVariable String productId) {
-        return cartService.removeItem(cartId, productId);
+    @DeleteMapping("/{cartId}/items/{lineId}")
+    public CartResponse removeItem(@PathVariable String cartId, @PathVariable String lineId) {
+        return cartService.removeItem(cartId, lineId);
     }
 
     @PostMapping("/{cartId}/checkout")
