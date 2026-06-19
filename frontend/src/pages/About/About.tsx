@@ -1,3 +1,5 @@
+import './About.css';
+
 export default function About() {
 	return (
 		<section className='section page-section about-page'>
@@ -20,11 +22,15 @@ export default function About() {
 					Every board that leaves our shop has been touched by our hands,
 					finished with care, and approved by Finn.
 				</p>
+				<p className='letter-signoff'>
+					<span>With gratitude,</span>
+					<span>Justin, Leigh Ann, and Finn</span>
+				</p>
 			</div>
 			<div className='about-stat-grid'>
 				<img
-					className='american-made'
-					src='/images/american-made.png'
+					className='family-pic'
+					src='/images/family-pic.jpg'
 					alt='Finny Boy Fab'
 				/>
 			</div>

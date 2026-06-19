@@ -1,8 +1,9 @@
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useCart } from '../lib/cart';
-import CartDrawer from './CartDrawer';
+import { useCart } from '../../lib/cart';
+import CartDrawer from '../CartDrawer';
+import './Layout.css';
 
 const navItems = [
 	{ label: 'Home', to: '/' },

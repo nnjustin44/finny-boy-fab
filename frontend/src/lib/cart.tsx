@@ -28,7 +28,7 @@ type CartContextValue = {
   addItem: (productId: string, quantity?: number, customization?: CartCustomization) => Promise<void>;
   updateItem: (lineId: string, quantity: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
-  checkout: () => Promise<CheckoutResponse>;
+  checkout: (termsAcknowledged: boolean) => Promise<CheckoutResponse>;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -106,9 +106,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [ensureCart]
   );
 
-  const checkout = useCallback(async () => {
+  const checkout = useCallback(async (termsAcknowledged: boolean) => {
     const activeCart = await ensureCart();
-    const response = await checkoutCart(activeCart.id);
+    const response = await checkoutCart(activeCart.id, termsAcknowledged);
     await resetCart();
     return response;
   }, [ensureCart, resetCart]);

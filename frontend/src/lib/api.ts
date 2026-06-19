@@ -55,8 +55,10 @@ export function removeCartItem(cartId: string, lineId: string) {
   });
 }
 
-export function checkoutCart(cartId: string) {
+export function checkoutCart(cartId: string, termsAcknowledged: boolean) {
   return request<CheckoutResponse>(`/api/cart/${cartId}/checkout`, {
-    method: "POST"
+    method: "POST",
+    headers: jsonHeaders,
+    body: JSON.stringify({ termsAcknowledged })
   });
 }

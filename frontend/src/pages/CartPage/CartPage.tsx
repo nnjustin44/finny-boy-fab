@@ -1,15 +1,21 @@
 import { CheckCircle2, Minus, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../lib/cart';
-import { formatMoney } from '../lib/format';
+import { useCart } from '../../lib/cart';
+import { formatMoney } from '../../lib/format';
+import '../../styles/cart.css';
+import './CartPage.css';
 
 export default function CartPage() {
 	const { cart, checkout, removeItem, updateItem, loading } = useCart();
 	const [orderNumber, setOrderNumber] = useState<string | null>(null);
+	const [termsAcknowledged, setTermsAcknowledged] = useState(false);
 
 	async function handleCheckout() {
-		const response = await checkout();
+		if (!termsAcknowledged) {
+			return;
+		}
+		const response = await checkout(termsAcknowledged);
 		setOrderNumber(response.orderNumber);
 	}
 
@@ -134,9 +140,37 @@ export default function CartPage() {
 							<span>Total</span>
 							<strong>{formatMoney(cart.totalCents)}</strong>
 						</div>
+						<section
+							className='order-consent'
+							aria-labelledby='order-consent-heading'>
+							<h3 id='order-consent-heading'>Before placing your order</h3>
+							<ol>
+								<li>
+									Wood is a natural material. Grain pattern, color, and other
+									visual details vary from board to board, so your finished piece
+									will be unique and may not look exactly like the product photos.
+									Each board is individually selected and crafted in our small shop.
+								</li>
+								<li>
+									Because we continue to fulfill military obligations, please allow
+									2-3 weeks for your order to be completed.
+								</li>
+							</ol>
+							<label className='consent-check'>
+								<input
+									type='checkbox'
+									checked={termsAcknowledged}
+									onChange={(event) =>
+										setTermsAcknowledged(event.target.checked)
+									}
+								/>
+								<span>I acknowledge these terms.</span>
+							</label>
+						</section>
 						<button
 							className='button primary full'
 							type='button'
+							disabled={loading || !termsAcknowledged}
 							onClick={handleCheckout}>
 							Place test order
 						</button>

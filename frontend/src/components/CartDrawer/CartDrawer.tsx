@@ -1,7 +1,9 @@
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import { formatMoney } from "../lib/format";
-import { useCart } from "../lib/cart";
+import { formatMoney } from "../../lib/format";
+import { useCart } from "../../lib/cart";
+import '../../styles/cart.css';
+import './CartDrawer.css';
 
 export default function CartDrawer() {
   const { cart, cartOpen, closeCart, removeItem, updateItem, loading } = useCart();

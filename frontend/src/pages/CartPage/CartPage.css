@@ -1,0 +1,135 @@
+.cart-empty-page,
+.confirmation {
+	display: grid;
+	place-items: center;
+	align-content: center;
+	gap: 18px;
+	min-height: 360px;
+	text-align: center;
+}
+
+.cart-page-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 340px;
+	gap: 42px;
+	align-items: start;
+}
+
+.cart-page-line {
+	display: grid;
+	grid-template-columns: 126px 1fr auto;
+	align-items: center;
+	gap: 16px;
+	padding: 18px;
+	margin-bottom: 14px;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: var(--white);
+}
+
+.cart-page-line img {
+	width: 126px;
+	height: 126px;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	object-fit: cover;
+}
+
+.cart-page-line h2 {
+	margin: 0 0 4px;
+	font-size: 16px;
+}
+
+.cart-page-line > strong,
+.order-summary strong {
+	color: var(--gold);
+}
+
+.order-summary {
+	position: sticky;
+	top: 104px;
+	display: grid;
+	gap: 18px;
+	padding: 18px;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: rgba(74, 96, 112, 0.06);
+}
+
+.order-summary > div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.order-summary span {
+	display: block;
+	margin-bottom: 6px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.summary-total {
+	padding-top: 12px;
+	border-top: 1px solid var(--line);
+	font-size: 18px;
+}
+
+.order-consent {
+	display: grid;
+	gap: 12px;
+	padding-top: 16px;
+	border-top: 1px solid var(--line);
+}
+
+.order-consent h3 {
+	font-size: 17px;
+}
+
+.order-consent ol {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding-left: 20px;
+	color: var(--muted);
+	font-size: 13px;
+	line-height: 1.55;
+}
+
+.consent-check {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	color: var(--navy);
+	font-size: 13px;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.consent-check input {
+	width: 18px;
+	height: 18px;
+	margin: 1px 0 0;
+	accent-color: var(--gold);
+}
+
+@media (max-width: 900px) {
+	.cart-page-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.order-summary {
+		position: static;
+	}
+}
+
+@media (max-width: 560px) {
+	.cart-page-line {
+		grid-template-columns: 94px 1fr;
+	}
+
+	.cart-page-line > strong {
+		grid-column: 2;
+	}
+}

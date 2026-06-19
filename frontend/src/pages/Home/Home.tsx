@@ -1,9 +1,10 @@
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ProductGrid from '../components/ProductGrid';
-import { getProducts } from '../lib/api';
-import type { Product } from '../types/store';
+import ProductGrid from '../../components/ProductGrid';
+import { getProducts } from '../../lib/api';
+import type { Product } from '../../types/store';
+import './Home.css';
 
 export default function Home() {
 	const [products, setProducts] = useState<Product[]>([]);
@@ -50,10 +51,10 @@ export default function Home() {
 					Every board begins with hand selected hardwoods for it's grain
 					pattern, beauty, and uniqueness. All boards are meticulously assembled
 					using non-toxic materials and finished with the highest quality
-					food-grade coconut oil and beeswax. The result is simple, beautiful,
-					and substantial enough to leave on display.
+					food-grade virgin coconut oil and beeswax. The result is simple,
+					beautiful, and substantial enough to leave on display.
 					<br /> <br /> Food is so much more than just what we eat. It's in the
-					quiet breakfast mornings, the loving “Have you eaten?”, the joyful
+					quiet breakfast mornings, the loving “Have you eaten yet?”, the joyful
 					celebrations, and even the gentle times of sorrow. We can’t make the
 					meals for you, but we can make the boards that help hold all those
 					precious moments.
@@ -80,7 +81,8 @@ export default function Home() {
 					<span>01</span>
 					<h3>Food-Grade Finish</h3>
 					<p>
-						Coconut oil and beeswax protect the wood while keeping care simple.
+						Virgin Coconut oil and beeswax protect the wood while keeping care
+						simple.
 					</p>
 				</div>
 				<div>

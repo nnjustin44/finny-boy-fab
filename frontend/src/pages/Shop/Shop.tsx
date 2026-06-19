@@ -1,8 +1,9 @@
 import { SlidersHorizontal } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import ProductGrid from "../components/ProductGrid";
-import { getProducts } from "../lib/api";
-import type { Product } from "../types/store";
+import ProductGrid from "../../components/ProductGrid";
+import { getProducts } from "../../lib/api";
+import type { Product } from "../../types/store";
+import './Shop.css';
 
 export default function Shop() {
   const [products, setProducts] = useState<Product[]>([]);

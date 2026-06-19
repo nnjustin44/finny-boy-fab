@@ -76,7 +76,10 @@ public class CartService {
         return toResponse(cartId);
     }
 
-    public CheckoutResponse checkout(String cartId) {
+    public CheckoutResponse checkout(String cartId, boolean termsAcknowledged) {
+        if (!termsAcknowledged) {
+            throw new ResponseStatusException(BAD_REQUEST, "Order terms must be acknowledged");
+        }
         CartResponse cart = getCart(cartId);
         String orderNumber = "FBF-" + (100000 + random.nextInt(900000));
         carts.remove(cartId);

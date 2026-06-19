@@ -1,0 +1,117 @@
+.hero {
+	position: relative;
+	min-height: clamp(560px, 78vh, 760px);
+	overflow: hidden;
+	border-bottom: 1px solid var(--line);
+	background: var(--navy);
+}
+
+.hero img {
+	width: 100%;
+	height: 100%;
+	min-height: inherit;
+	object-fit: cover;
+}
+
+.hero-copy {
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	left: clamp(22px, 7vw, 92px);
+	width: min(540px, calc(100% - 44px));
+	transform: translateY(-50%);
+}
+
+.hero-copy p:not(.eyebrow) {
+	max-width: 470px;
+	color: var(--white);
+	font-size: 18px;
+}
+
+.hero-copy h1 {
+	color: var(--slate);
+}
+
+.intro-band {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+	gap: 60px;
+	align-items: start;
+}
+
+.intro-paragraph {
+	margin-top: 30px;
+	font-size: 20px;
+}
+
+.american-made-home {
+	display: block;
+	justify-self: center;
+	width: auto;
+	max-width: 50%;
+	height: 50%;
+	margin: 50px;
+	border: 1ch, solid, #193046;
+	border-radius: 50%;
+}
+
+.feature-strip {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	background: var(--charcoal);
+	color: var(--white);
+}
+
+.feature-strip div {
+	min-height: 220px;
+	padding: 42px;
+	border-right: 1px solid rgba(200, 169, 110, 0.34);
+}
+
+.feature-strip span {
+	color: var(--gold);
+	font-size: 13px;
+	font-weight: 800;
+}
+
+.feature-strip h3 {
+	margin-top: 36px;
+}
+
+.feature-strip p {
+	color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 900px) {
+	.hero {
+		min-height: 620px;
+	}
+
+	.hero::after {
+		background: linear-gradient(180deg, rgba(25, 48, 70, 0.92), rgba(25, 48, 70, 0.2));
+	}
+
+	.hero-copy {
+		top: 120px;
+		transform: none;
+	}
+
+	.intro-band,
+	.feature-strip {
+		grid-template-columns: 1fr;
+	}
+
+	.feature-strip div {
+		border-right: 0;
+		border-bottom: 1px solid rgba(200, 169, 110, 0.34);
+	}
+}
+
+@media (max-width: 560px) {
+	.hero-copy {
+		left: 18px;
+		width: calc(100% - 36px);
+	}
+}

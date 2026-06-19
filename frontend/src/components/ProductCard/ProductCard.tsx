@@ -1,8 +1,9 @@
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useCart } from "../lib/cart";
-import { formatMoney } from "../lib/format";
-import type { Product } from "../types/store";
+import { useCart } from "../../lib/cart";
+import { formatMoney } from "../../lib/format";
+import type { Product } from "../../types/store";
+import './ProductCard.css';
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem, loading } = useCart();

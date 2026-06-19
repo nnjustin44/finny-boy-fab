@@ -55,7 +55,10 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/checkout")
-    public CheckoutResponse checkout(@PathVariable String cartId) {
-        return cartService.checkout(cartId);
+    public CheckoutResponse checkout(
+            @PathVariable String cartId,
+            @RequestBody CheckoutRequest request
+    ) {
+        return cartService.checkout(cartId, request.termsAcknowledged());
     }
 }

@@ -79,4 +79,13 @@ class CartServiceTests {
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("Selected wood is not available for this product");
     }
+
+    @Test
+    void rejectsCheckoutWithoutAcknowledgedTerms() {
+        CartResponse cart = cartService.createCart();
+
+        assertThatThrownBy(() -> cartService.checkout(cart.id(), false))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("Order terms must be acknowledged");
+    }
 }

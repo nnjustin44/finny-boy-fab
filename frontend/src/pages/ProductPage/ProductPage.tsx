@@ -1,10 +1,11 @@
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getProduct } from '../lib/api';
-import { useCart } from '../lib/cart';
-import { formatMoney } from '../lib/format';
-import type { Product } from '../types/store';
+import { getProduct } from '../../lib/api';
+import { useCart } from '../../lib/cart';
+import { formatMoney } from '../../lib/format';
+import type { Product } from '../../types/store';
+import './ProductPage.css';
 
 export default function ProductPage() {
 	const { slug } = useParams();

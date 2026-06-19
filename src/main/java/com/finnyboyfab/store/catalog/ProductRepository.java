@@ -14,7 +14,7 @@ public class ProductRepository {
                     "generic-end-grain-cutting-board",
                     "End Grain Cutting Board",
                     "A thick everyday workhorse with a refined kitchen profile.",
-                    "Built to endure. Always finished with food-grade coconut oil and beeswax.",
+                    "Built to endure. Always finished with food-grade virgin coconut oil and beeswax.",
                     "End-grain cutting boards are gentle on your knives, gold standard for edge retention and durability. Their self-healing surface hides scratches from heavy knife use, making them the perfect choice for serious home chefs.",
                     "/images/walnut-end-grain.png",
                     "Maple, cherry, or walnut",
