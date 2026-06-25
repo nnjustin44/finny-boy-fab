@@ -1,4 +1,4 @@
-import { Droplets, Sparkles, Sun } from 'lucide-react';
+import { Droplets, Leaf, ShieldCheck, Sparkles, Sun } from 'lucide-react';
 import './LearnMore.css';
 
 const careItems = [
@@ -37,6 +37,11 @@ const whyWoodLinks = [
 		title: 'Wood vs. Plastic boards',
 		href: 'https://butcherblock.com/wp-content/uploads/2023/02/University_of_Wisconsin_ScienceReport_2023.pdf',
 	},
+	{
+		source: 'Video',
+		title: 'Watch: Why wood cutting boards are safer than plastic',
+		href: 'https://www.youtube.com/watch?v=yM5LxrXoxn0',
+	},
 ];
 
 export default function LearnMore() {
@@ -65,30 +70,72 @@ export default function LearnMore() {
 				})}
 			</div>
 
-			<div className='material-band'>
-				<div>
-					<h2>Food Grade vs. Food Safe</h2>
-					<p>
-						Walnut is rich and slightly softer under the knife. Maple is pale,
-						dense, and classic. Cherry starts warm and deepens beautifully with
-						age.
+			<div className='material-band transparency-band'>
+				<div className='transparency-copy'>
+					<p className='transparency-kicker'>Food-safe by design</p>
+					<h2>Our Commitment to Transparency</h2>
+					<p className='transparency-lede'>
+						Every board is built around three choices we are comfortable naming:
+						the wood, the adhesive, and the finish your food touches every day.
 					</p>
+					<div className='transparency-points'>
+						<article>
+							<Leaf size={22} />
+							<div>
+								<span>Wood Type</span>
+								<p>
+									The FDA does not maintain an explicit approved wood list.
+									Instead, wood must be smooth, nonporous, and easily cleanable
+									per FDA Food Code guidelines (Section 4-101.11). We use
+									closed-grain woods that meet that standard and reduce places
+									where bacteria can hide.
+								</p>
+							</div>
+						</article>
+						<article>
+							<ShieldCheck size={22} />
+							<div>
+								<span>Glue Type</span>
+								<p>
+									We use Titebond III for wood joinery. Once cured, it forms a
+									waterproof bond stronger than the wood itself and meets 21 CFR
+									175.105 for adhesives used around food-contact surfaces. For
+									customers who want no glue contact at all, The Perfect Board is
+									a single solid piece of hardwood.
+								</p>
+							</div>
+						</article>
+						<article>
+							<Sparkles size={22} />
+							<div>
+								<span>Finish</span>
+								<p>
+									We skip mineral oil and finish every board with a virgin
+									coconut oil and beeswax blend. The oil is natural and food
+									safe, while the beeswax seals and hardens the surface so it can
+									be refreshed for years of use.
+								</p>
+							</div>
+						</article>
+					</div>
 				</div>
-				<img
-					src='/images/walnut-end-grain.png'
-					alt='Walnut end-grain cutting board'
-				/>
+				<div className='transparency-image'>
+					<img
+						src='/images/walnut-end-grain.png'
+						alt='Walnut end-grain cutting board'
+					/>
+				</div>
 			</div>
-			<div className='material-band'>
-				<div className='youtube-container'>
-					<iframe
-						src='https://www.youtube.com/embed/yM5LxrXoxn0?rel=0&rel=0'
-						width='500'
-						height='350'
-						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'></iframe>
+			<div className='material-band branded-band media-first'>
+				<div className='band-media-frame'>
+					<img
+						src='/images/maple-walnut-server.png'
+						alt='Maple and walnut serving board'
+					/>
 				</div>
 
-				<div>
+				<div className='band-copy'>
+					<p className='transparency-kicker'>Material science</p>
 					<h2>Why Wood?</h2>
 					<p>
 						Not only do they eliminate microplastics, science has proven over
@@ -116,8 +163,9 @@ export default function LearnMore() {
 				</div>
 			</div>
 
-			<div className='material-band'>
-				<div>
+			<div className='material-band branded-band'>
+				<div className='band-copy'>
+					<p className='transparency-kicker'>Board construction</p>
 					<h2>End grain vs. Edge Grain</h2>
 					<p>
 						Imagine wood like a bundle of straws. When looking at the bundle
@@ -132,10 +180,12 @@ export default function LearnMore() {
 						installed.
 					</p>
 				</div>
-				<img
-					src='/images/wood-grain.webp'
-					alt='Walnut end-grain cutting board'
-				/>
+				<div className='band-media-frame'>
+					<img
+						src='/images/wood-grain.webp'
+						alt='Walnut end-grain cutting board'
+					/>
+				</div>
 			</div>
 		</section>
 	);

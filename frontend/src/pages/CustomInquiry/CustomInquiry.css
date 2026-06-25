@@ -1,0 +1,185 @@
+.custom-inquiry-page {
+	display: grid;
+	gap: 46px;
+}
+
+.custom-inquiry-hero {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+	gap: 42px;
+	align-items: end;
+}
+
+.custom-inquiry-hero > div:first-child p:not(.eyebrow) {
+	max-width: 760px;
+	font-size: 18px;
+}
+
+.inquiry-process {
+	display: grid;
+	gap: 14px;
+	padding: 28px;
+	border: 1px solid rgba(200, 169, 110, 0.44);
+	border-radius: 6px;
+	background:
+		linear-gradient(135deg, rgba(25, 48, 70, 0.95), rgba(25, 48, 70, 0.84)),
+		url('/images/wood-grain.webp') center / cover;
+	color: var(--white);
+}
+
+.inquiry-process div {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+	font-weight: 800;
+}
+
+.inquiry-process div:last-child {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+.inquiry-process svg {
+	flex: 0 0 auto;
+	color: var(--gold);
+}
+
+.custom-inquiry-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+	gap: 34px;
+	align-items: start;
+}
+
+.custom-inquiry-form {
+	display: grid;
+	gap: 22px;
+	padding: 32px;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--white);
+}
+
+.custom-inquiry-form .form-row {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+}
+
+.custom-inquiry-form label {
+	display: grid;
+	gap: 8px;
+	color: var(--navy);
+	font-size: 13px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.custom-inquiry-form input,
+.custom-inquiry-form select,
+.custom-inquiry-form textarea {
+	width: 100%;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: var(--paper);
+	color: var(--navy);
+	font: inherit;
+	font-weight: 500;
+	outline: 0;
+}
+
+.custom-inquiry-form input,
+.custom-inquiry-form select {
+	min-height: 46px;
+	padding: 0 14px;
+}
+
+.custom-inquiry-form textarea {
+	resize: vertical;
+	min-height: 170px;
+	padding: 14px;
+	line-height: 1.5;
+}
+
+.custom-inquiry-form input:focus,
+.custom-inquiry-form select:focus,
+.custom-inquiry-form textarea:focus {
+	border-color: var(--gold);
+	box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.18);
+}
+
+.custom-inquiry-form .button {
+	justify-self: start;
+}
+
+.inquiry-status {
+	margin: 0;
+	padding: 12px 14px;
+	border-left: 3px solid var(--gold);
+	background: rgba(200, 169, 110, 0.12);
+	color: var(--navy);
+	font-size: 14px;
+}
+
+.inquiry-status code {
+	font-weight: 800;
+}
+
+.custom-inquiry-details {
+	display: grid;
+	gap: 18px;
+}
+
+.custom-inquiry-details > div,
+.custom-inquiry-details ul {
+	margin: 0;
+	padding: 24px;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+}
+
+.custom-inquiry-details svg {
+	margin-bottom: 16px;
+	color: var(--gold);
+}
+
+.custom-inquiry-details h2 {
+	margin-bottom: 10px;
+	font-size: 28px;
+}
+
+.custom-inquiry-details p {
+	margin-bottom: 0;
+}
+
+.custom-inquiry-details ul {
+	display: grid;
+	gap: 12px;
+	padding-left: 42px;
+	color: var(--muted);
+	line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+	.custom-inquiry-hero,
+	.custom-inquiry-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 560px) {
+	.custom-inquiry-form {
+		padding: 22px;
+	}
+
+	.custom-inquiry-form .form-row {
+		grid-template-columns: 1fr;
+	}
+
+	.custom-inquiry-form .button {
+		width: 100%;
+	}
+}

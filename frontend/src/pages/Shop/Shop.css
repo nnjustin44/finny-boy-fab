@@ -30,16 +30,106 @@
 	outline: 0;
 }
 
+.special-projects {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+	gap: 32px;
+	margin-top: 58px;
+	padding: 34px;
+	overflow: hidden;
+	border: 1px solid rgba(200, 169, 110, 0.42);
+	border-radius: 6px;
+	background:
+		linear-gradient(135deg, rgba(25, 48, 70, 0.94), rgba(25, 48, 70, 0.82)),
+		url('/images/maple-walnut-server.png') center / cover;
+	color: var(--white);
+}
+
+.special-projects::before {
+	content: '';
+	position: absolute;
+	inset: 18px;
+	pointer-events: none;
+	border: 1px solid rgba(200, 169, 110, 0.3);
+}
+
+.special-projects-copy,
+.special-projects-card {
+	position: relative;
+	z-index: 1;
+}
+
+.special-projects h2,
+.special-projects h3,
+.special-projects p {
+	color: inherit;
+}
+
+.special-projects h2 {
+	max-width: 620px;
+}
+
+.special-projects-copy > p:not(.eyebrow) {
+	max-width: 650px;
+	color: rgba(255, 255, 255, 0.78);
+}
+
+.special-projects .text-link {
+	margin-top: 8px;
+	color: var(--gold);
+}
+
+.special-projects-card {
+	align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 220px;
+	padding: 28px;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	background: rgba(248, 246, 241, 0.1);
+	backdrop-filter: blur(8px);
+}
+
+.special-projects-card svg {
+	margin-bottom: 18px;
+	color: var(--gold);
+}
+
+.special-projects-card p {
+	margin-bottom: 0;
+	color: rgba(255, 255, 255, 0.76);
+}
+
 @media (max-width: 900px) {
 	.shop-heading {
 		display: grid;
 		grid-template-columns: 1fr;
 		align-items: start;
 	}
+
+	.special-projects {
+		grid-template-columns: 1fr;
+	}
 }
 
 @media (max-width: 560px) {
 	.filter-control {
 		width: 100%;
+	}
+
+	.special-projects {
+		margin-top: 42px;
+		padding: 28px 22px;
+	}
+
+	.special-projects::before {
+		inset: 12px;
+	}
+
+	.special-projects-card {
+		min-height: 0;
+		padding: 22px;
 	}
 }

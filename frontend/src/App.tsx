@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import About from "./pages/About";
 import CartPage from "./pages/CartPage";
+import Contact from "./pages/Contact";
+import CustomInquiry from "./pages/CustomInquiry";
 import Home from "./pages/Home";
 import LearnMore from "./pages/LearnMore";
 import ProductPage from "./pages/ProductPage";
@@ -16,6 +18,8 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/about" element={<About />} />
         <Route path="/learn" element={<LearnMore />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/custom-inquiry" element={<CustomInquiry />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
       </Routes>

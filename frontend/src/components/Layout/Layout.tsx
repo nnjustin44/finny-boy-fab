@@ -10,6 +10,8 @@ const navItems = [
 	{ label: 'Shop', to: '/shop' },
 	{ label: 'Learn More', to: '/learn' },
 	{ label: 'Our Story', to: '/about' },
+	{ label: 'Custom Inquiry', to: '/custom-inquiry' },
+	{ label: 'Contact', to: '/contact' },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -81,6 +83,8 @@ export default function Layout({ children }: { children: ReactNode }) {
 					<Link to='/shop'>Shop</Link>
 					<Link to='/learn'>Care Guide</Link>
 					<Link to='/about'>Our Story</Link>
+					<Link to='/custom-inquiry'>Custom Inquiry</Link>
+					<Link to='/contact'>Contact</Link>
 				</div>
 			</footer>
 

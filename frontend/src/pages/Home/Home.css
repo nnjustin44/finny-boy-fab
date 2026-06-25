@@ -71,13 +71,18 @@
 }
 
 .feature-strip span {
+	display: inline-grid;
+	place-items: center;
+	width: 48px;
+	height: 48px;
+	border: 1px solid rgba(200, 169, 110, 0.38);
+	border-radius: 50%;
 	color: var(--gold);
-	font-size: 13px;
-	font-weight: 800;
+	background: rgba(255, 255, 255, 0.05);
 }
 
 .feature-strip h3 {
-	margin-top: 36px;
+	margin-top: 30px;
 }
 
 .feature-strip p {

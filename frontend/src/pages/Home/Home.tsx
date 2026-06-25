@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Droplet, Hammer, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductGrid from '../../components/ProductGrid';
@@ -78,7 +78,12 @@ export default function Home() {
 
 			<section className='feature-strip'>
 				<div>
-					<span>01</span>
+					<span>
+						<Droplet
+							size={28}
+							aria-hidden='true'
+						/>
+					</span>
 					<h3>Food-Grade Finish</h3>
 					<p>
 						Virgin Coconut oil and beeswax protect the wood while keeping care
@@ -86,14 +91,24 @@ export default function Home() {
 					</p>
 				</div>
 				<div>
-					<span>02</span>
+					<span>
+						<Hammer
+							size={28}
+							aria-hidden='true'
+						/>
+					</span>
 					<h3>Built to Order</h3>
 					<p>
 						Inventory stays intentionally limited for beauty and sustainability.
 					</p>
 				</div>
 				<div>
-					<span>03</span>
+					<span>
+						<Star
+							size={28}
+							aria-hidden='true'
+						/>
+					</span>
 					<h3>Veteran Owned and Operated</h3>
 					<p>
 						We bring the same discipline, attention to detail, and commitment to
