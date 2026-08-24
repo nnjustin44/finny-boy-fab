@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finnyboyfab.store.checkout.CheckoutSessionResponse;
+import com.finnyboyfab.store.checkout.StripeCheckoutService;
+
 @Validated
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
     private final CartService cartService;
+    private final StripeCheckoutService stripeCheckoutService;
 
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, StripeCheckoutService stripeCheckoutService) {
         this.cartService = cartService;
+        this.stripeCheckoutService = stripeCheckoutService;
     }
 
     @PostMapping
@@ -55,10 +60,11 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/checkout")
-    public CheckoutResponse checkout(
+    public CheckoutSessionResponse checkout(
             @PathVariable String cartId,
             @RequestBody CheckoutRequest request
     ) {
-        return cartService.checkout(cartId, request.termsAcknowledged());
+        CartResponse cart = cartService.prepareCheckout(cartId, request.termsAcknowledged());
+        return stripeCheckoutService.createSession(cart);
     }
 }

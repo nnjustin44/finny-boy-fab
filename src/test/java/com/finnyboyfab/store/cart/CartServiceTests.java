@@ -27,8 +27,8 @@ class CartServiceTests {
         assertThat(line.rubberFeet()).isTrue();
         assertThat(line.initialsEngraving()).isFalse();
         assertThat(line.addOnTotalCents()).isEqualTo(1000);
-        assertThat(line.lineTotalCents()).isEqualTo(19500);
-        assertThat(updatedCart.subtotalCents()).isEqualTo(19500);
+        assertThat(line.lineTotalCents()).isEqualTo(28500);
+        assertThat(updatedCart.subtotalCents()).isEqualTo(28500);
     }
 
     @Test
@@ -47,8 +47,8 @@ class CartServiceTests {
         assertThat(line.initialsEngraving()).isTrue();
         assertThat(line.initials()).isEqualTo("JN");
         assertThat(line.addOnTotalCents()).isEqualTo(2000);
-        assertThat(line.lineTotalCents()).isEqualTo(39000);
-        assertThat(updatedCart.subtotalCents()).isEqualTo(39000);
+        assertThat(line.lineTotalCents()).isEqualTo(47000);
+        assertThat(updatedCart.subtotalCents()).isEqualTo(47000);
     }
 
     @Test
@@ -66,7 +66,7 @@ class CartServiceTests {
         assertThat(line.initialsEngraving()).isTrue();
         assertThat(line.initials()).isEqualTo("JN");
         assertThat(line.addOnTotalCents()).isEqualTo(2000);
-        assertThat(line.lineTotalCents()).isEqualTo(20500);
+        assertThat(line.lineTotalCents()).isEqualTo(24500);
     }
 
     @Test
@@ -84,8 +84,17 @@ class CartServiceTests {
     void rejectsCheckoutWithoutAcknowledgedTerms() {
         CartResponse cart = cartService.createCart();
 
-        assertThatThrownBy(() -> cartService.checkout(cart.id(), false))
+        assertThatThrownBy(() -> cartService.prepareCheckout(cart.id(), false))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("Order terms must be acknowledged");
+    }
+
+    @Test
+    void rejectsCheckoutWithEmptyCart() {
+        CartResponse cart = cartService.createCart();
+
+        assertThatThrownBy(() -> cartService.prepareCheckout(cart.id(), true))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("Cart must contain at least one item");
     }
 }

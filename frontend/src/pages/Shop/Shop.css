@@ -42,7 +42,7 @@
 	border-radius: 6px;
 	background:
 		linear-gradient(135deg, rgba(25, 48, 70, 0.94), rgba(25, 48, 70, 0.82)),
-		url('/images/maple-walnut-server.png') center / cover;
+		url('/images/products/maple-walnut-serving-board/maple-walnut-server.png') center / cover;
 	color: var(--white);
 }
 

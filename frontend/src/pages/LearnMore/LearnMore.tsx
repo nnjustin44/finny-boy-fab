@@ -100,8 +100,8 @@ export default function LearnMore() {
 									We use Titebond III for wood joinery. Once cured, it forms a
 									waterproof bond stronger than the wood itself and meets 21 CFR
 									175.105 for adhesives used around food-contact surfaces. For
-									customers who want no glue contact at all, The Perfect Board is
-									a single solid piece of hardwood.
+									customers who want no glue contact at all, The Perfect Board
+									is a single solid piece of hardwood.
 								</p>
 							</div>
 						</article>
@@ -112,8 +112,8 @@ export default function LearnMore() {
 								<p>
 									We skip mineral oil and finish every board with a virgin
 									coconut oil and beeswax blend. The oil is natural and food
-									safe, while the beeswax seals and hardens the surface so it can
-									be refreshed for years of use.
+									safe, while the beeswax seals and hardens the surface so it
+									can be refreshed for years of use.
 								</p>
 							</div>
 						</article>
@@ -121,7 +121,7 @@ export default function LearnMore() {
 				</div>
 				<div className='transparency-image'>
 					<img
-						src='/images/walnut-end-grain.png'
+						src='/images/products/end-grain-cutting-board/walnut-end-grain.png'
 						alt='Walnut end-grain cutting board'
 					/>
 				</div>
@@ -129,7 +129,7 @@ export default function LearnMore() {
 			<div className='material-band branded-band media-first'>
 				<div className='band-media-frame'>
 					<img
-						src='/images/maple-walnut-server.png'
+						src='/images/products/maple-walnut-serving-board/maple-walnut-server.png'
 						alt='Maple and walnut serving board'
 					/>
 				</div>

@@ -1,8 +1,14 @@
 package com.finnyboyfab.store.catalog;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,11 +22,13 @@ public class ProductRepository {
                     "A thick everyday workhorse with a refined kitchen profile.",
                     "Built to endure. Always finished with food-grade virgin coconut oil and beeswax.",
                     "End-grain cutting boards are gentle on your knives, gold standard for edge retention and durability. Their self-healing surface hides scratches from heavy knife use, making them the perfect choice for serious home chefs.",
-                    "/images/walnut-end-grain.png",
+                    "/images/products/end-grain-cutting-board/walnut-end-grain.png",
+                    productImages("end-grain-cutting-board"),
                     "Maple, cherry, or walnut",
                     List.of("Maple", "Cherry", "Walnut"),
                     "18 in x 13 in x 1.75 in",
-                    18500,
+                    22500,
+                    Map.of("Maple", 22500, "Cherry", 22500, "Walnut", 27500),
                     8,
                     true,
                     List.of("End-grain construction", "Choose maple, cherry, or walnut", "Soft beveled edges",
@@ -32,11 +40,13 @@ public class ProductRepository {
                     "A long striped board for bread, cheese, and table service.",
                     "Alternating maple and walnut strips give this serving board a crisp, modern rhythm without feeling busy.",
                     "Sized for gatherings and weeknight dinners alike, with a comfortable rounded handle and hanging hole.",
-                    "/images/maple-walnut-server.png",
+                    "/images/products/maple-walnut-serving-board/maple-walnut-server.png",
+                    productImages("maple-walnut-serving-board"),
                     "Hard maple and walnut",
                     List.of(),
                     "26 in x 7 in x 0.875 in",
                     12800,
+                    Map.of(),
                     12,
                     true,
                     List.of("Long paddle profile", "Rounded handle", "Hanging hole", "Satin hand-rubbed finish")),
@@ -47,11 +57,13 @@ public class ProductRepository {
                     "A warm, circular serving board with a routed juice groove.",
                     "Cherry develops a richer tone over time, making each board more personal the longer it lives in your kitchen.",
                     "A versatile round board for charcuterie, fruit, pastry, or countertop display.",
-                    "/images/cherry-round-board.png",
+                    "/images/products/round-cherry-charcuterie-board/cherry-round-board.png",
+                    productImages("round-cherry-charcuterie-board"),
                     "Cherry",
                     List.of(),
                     "16 in diameter x 1 in",
                     14200,
+                    Map.of(),
                     10,
                     false,
                     List.of("Routed perimeter groove", "Smooth roundover edge", "Food-safe oil and wax finish",
@@ -67,5 +79,44 @@ public class ProductRepository {
 
     public Optional<Product> findById(String id) {
         return products.stream().filter(product -> product.id().equals(id)).findFirst();
+    }
+
+    private static List<String> productImages(String folderName) {
+        try {
+            Resource[] resources = new PathMatchingResourcePatternResolver()
+                    .getResources("classpath:/static/images/products/" + folderName + "/*");
+
+            return List.of(resources).stream()
+                    .filter(Resource::isReadable)
+                    .map(ProductRepository::filename)
+                    .filter(ProductRepository::isImage)
+                    .sorted(Comparator.comparing(ProductRepository::gallerySortKey)
+                            .thenComparing(filename -> filename))
+                    .map(filename -> "/images/products/" + folderName + "/" + filename)
+                    .toList();
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+    }
+
+    private static String filename(Resource resource) {
+        return resource.getFilename() == null ? "" : resource.getFilename();
+    }
+
+    private static boolean isImage(String filename) {
+        String normalizedFilename = filename.toLowerCase();
+        return normalizedFilename.endsWith(".jpg")
+                || normalizedFilename.endsWith(".jpeg")
+                || normalizedFilename.endsWith(".png")
+                || normalizedFilename.endsWith(".webp");
+    }
+
+    private static String gallerySortKey(String filename) {
+        return switch (filename) {
+            case "walnut-end-grain.png" -> "000-" + filename;
+            case "walnut-endgrain-2.png" -> "001-" + filename;
+            case "walnut-end-grain-3.png" -> "002-" + filename;
+            default -> "100-" + filename;
+        };
     }
 }

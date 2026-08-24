@@ -59,7 +59,8 @@
 	position: relative;
 	overflow: hidden;
 	border: 1px solid rgba(200, 169, 110, 0.34);
-	background: radial-gradient(
+	background:
+		radial-gradient(
 			circle at 88% 18%,
 			rgba(200, 169, 110, 0.18),
 			transparent 28rem
@@ -236,7 +237,9 @@
 	background: rgba(255, 255, 255, 0.05);
 	color: var(--white);
 	text-decoration: none;
-	transition: background 150ms ease, border-color 150ms ease;
+	transition:
+		background 150ms ease,
+		border-color 150ms ease;
 }
 
 .source-card:hover {

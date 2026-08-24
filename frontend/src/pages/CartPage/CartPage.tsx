@@ -1,4 +1,4 @@
-import { CheckCircle2, Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../lib/cart';
@@ -8,34 +8,20 @@ import './CartPage.css';
 
 export default function CartPage() {
 	const { cart, checkout, removeItem, updateItem, loading } = useCart();
-	const [orderNumber, setOrderNumber] = useState<string | null>(null);
 	const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+	const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
 	async function handleCheckout() {
 		if (!termsAcknowledged) {
 			return;
 		}
-		const response = await checkout(termsAcknowledged);
-		setOrderNumber(response.orderNumber);
-	}
-
-	if (orderNumber) {
-		return (
-			<section className='section page-section confirmation'>
-				<CheckCircle2 size={42} />
-				<p className='eyebrow'>Order received</p>
-				<h1>{orderNumber}</h1>
-				<p>
-					This MVP captured the order flow. The next production step is
-					connecting Stripe, taxes, shipping rates, and persistence.
-				</p>
-				<Link
-					className='button primary'
-					to='/shop'>
-					Keep shopping
-				</Link>
-			</section>
-		);
+		setCheckoutError(null);
+		try {
+			const response = await checkout(termsAcknowledged);
+			window.location.assign(response.checkoutUrl);
+		} catch {
+			setCheckoutError('Unable to start secure checkout. Please try again.');
+		}
 	}
 
 	return (
@@ -172,8 +158,13 @@ export default function CartPage() {
 							type='button'
 							disabled={loading || !termsAcknowledged}
 							onClick={handleCheckout}>
-							Place test order
+							{loading ? 'Opening checkout...' : 'Checkout securely'}
 						</button>
+						{checkoutError && (
+							<p className='checkout-error' role='alert'>
+								{checkoutError}
+							</p>
+						)}
 					</aside>
 				</div>
 			)}

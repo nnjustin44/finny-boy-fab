@@ -6,10 +6,12 @@ export type Product = {
   description: string;
   story: string;
   imageUrl: string;
+  imageUrls?: string[];
   wood: string;
   woodOptions?: string[];
   dimensions: string;
   priceCents: number;
+  woodPriceCents?: Record<string, number>;
   inventory: number;
   featured: boolean;
   details: string[];
@@ -44,6 +46,12 @@ export type Cart = {
 };
 
 export type CheckoutResponse = {
-  orderNumber: string;
-  cart: Cart;
+  sessionId: string;
+  checkoutUrl: string;
+};
+
+export type CheckoutStatus = {
+  sessionId: string;
+  status: string;
+  paymentStatus: string;
 };

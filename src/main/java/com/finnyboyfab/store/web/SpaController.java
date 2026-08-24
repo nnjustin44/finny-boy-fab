@@ -13,6 +13,7 @@ public class SpaController {
             "/about",
             "/learn",
             "/cart",
+            "/checkout/success",
             "/products/{slug}"
     })
     public String app() {

@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import About from "./pages/About";
 import CartPage from "./pages/CartPage";
+import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import Contact from "./pages/Contact";
 import CustomInquiry from "./pages/CustomInquiry";
 import Home from "./pages/Home";
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/custom-inquiry" element={<CustomInquiry />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
       </Routes>
     </Layout>

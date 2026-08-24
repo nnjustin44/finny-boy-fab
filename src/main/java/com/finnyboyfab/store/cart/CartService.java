@@ -1,6 +1,5 @@
 package com.finnyboyfab.store.cart;
 
-import java.security.SecureRandom;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,8 +24,6 @@ public class CartService {
 
     private final ProductRepository productRepository;
     private final Map<String, Map<String, CartLineItem>> carts = new ConcurrentHashMap<>();
-    private final SecureRandom random = new SecureRandom();
-
     public CartService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -76,14 +73,15 @@ public class CartService {
         return toResponse(cartId);
     }
 
-    public CheckoutResponse checkout(String cartId, boolean termsAcknowledged) {
+    public CartResponse prepareCheckout(String cartId, boolean termsAcknowledged) {
         if (!termsAcknowledged) {
             throw new ResponseStatusException(BAD_REQUEST, "Order terms must be acknowledged");
         }
         CartResponse cart = getCart(cartId);
-        String orderNumber = "FBF-" + (100000 + random.nextInt(900000));
-        carts.remove(cartId);
-        return new CheckoutResponse(orderNumber, cart);
+        if (cart.items().isEmpty()) {
+            throw new ResponseStatusException(BAD_REQUEST, "Cart must contain at least one item");
+        }
+        return cart;
     }
 
     private Map<String, CartLineItem> ensureCart(String cartId) {
@@ -165,7 +163,7 @@ public class CartService {
                                     line.initialsEngraving(),
                                     line.initials(),
                                     addOnCents * line.quantity(),
-                                    (product.priceCents() + addOnCents) * line.quantity()
+                                    (product.priceCentsForWood(line.selectedWood()) + addOnCents) * line.quantity()
                             );
                         })
                         .orElse(null))

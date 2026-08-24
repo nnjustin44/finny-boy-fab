@@ -114,6 +114,14 @@
 	accent-color: var(--gold);
 }
 
+.checkout-error {
+	margin: 0;
+	color: #a1372c;
+	font-size: 13px;
+	font-weight: 700;
+	text-align: center;
+}
+
 @media (max-width: 900px) {
 	.cart-page-grid {
 		grid-template-columns: 1fr;

@@ -1,4 +1,10 @@
-import type { Cart, CartCustomization, CheckoutResponse, Product } from "../types/store";
+import type {
+  Cart,
+  CartCustomization,
+  CheckoutResponse,
+  CheckoutStatus,
+  Product
+} from "../types/store";
 
 const jsonHeaders = {
   "Content-Type": "application/json"
@@ -61,4 +67,8 @@ export function checkoutCart(cartId: string, termsAcknowledged: boolean) {
     headers: jsonHeaders,
     body: JSON.stringify({ termsAcknowledged })
   });
+}
+
+export function getCheckoutSession(sessionId: string) {
+  return request<CheckoutStatus>(`/api/checkout/sessions/${encodeURIComponent(sessionId)}`);
 }
