@@ -28,6 +28,7 @@
 	height: 100%;
 	object-fit: contain;
 	opacity: 0;
+	transition: opacity 350ms ease;
 }
 
 .product-detail-image img.active {
@@ -43,7 +44,7 @@
 	height: 42px;
 	border: 1px solid rgba(255, 255, 255, 0.7);
 	border-radius: 999px;
-	background: transparent;
+	background: rgba(25, 48, 70, 0.9);
 	color: var(--white);
 	filter: drop-shadow(0 2px 4px rgba(13, 31, 42, 0.42));
 	cursor: pointer;
@@ -55,7 +56,7 @@
 
 .product-image-control:hover,
 .product-image-control:focus-visible {
-	background: rgba(255, 255, 255, 0.14);
+	background: var(--navy);
 	transform: translateY(-50%) scale(1.04);
 }
 
@@ -65,6 +66,64 @@
 
 .product-image-control.next {
 	right: 14px;
+}
+
+.product-image-dots {
+	position: absolute;
+	bottom: 14px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 8px;
+	opacity: 1;
+	transition: opacity 150ms ease;
+}
+
+.product-image-dots.is-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.product-image-dot {
+	position: relative;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	cursor: pointer;
+	transition:
+		background 160ms ease,
+		transform 160ms ease;
+}
+
+.product-image-dot::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 12px;
+	height: 12px;
+	border: 2px solid var(--white);
+	border-radius: 50%;
+	background: var(--navy);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+	content: '';
+	transform: translate(-50%, -50%);
+}
+
+.product-image-dot:hover,
+.product-image-dot:focus-visible {
+	background: rgba(25, 48, 70, 0.2);
+}
+
+.product-image-dot.active {
+	background: transparent;
+}
+
+.product-image-dot.active::after {
+	background: var(--white);
+	transform: translate(-50%, -50%) scale(1.2);
 }
 
 .product-detail-copy h1 {
@@ -96,12 +155,17 @@
 
 .customization-panel {
 	display: grid;
+	min-inline-size: 0;
 	gap: 12px;
 	margin-bottom: 28px;
 	padding: 18px;
 	border: 1px solid var(--line);
 	border-radius: 5px;
 	background: rgba(74, 96, 112, 0.06);
+}
+
+.customization-panel legend {
+	padding: 0;
 }
 
 .wood-field {
@@ -139,12 +203,7 @@
 .option-row input {
 	width: 18px;
 	height: 18px;
-	accent-color: var(--gold);
-}
-
-.option-row:has(input:disabled) {
-	opacity: 0.55;
-	cursor: not-allowed;
+	accent-color: var(--navy);
 }
 
 .option-row span {
@@ -156,7 +215,7 @@
 }
 
 .option-row small {
-	color: var(--gold);
+	color: var(--gold-ink);
 	font-size: 13px;
 	font-weight: 800;
 }
@@ -171,6 +230,12 @@
 	color: var(--muted);
 	font-size: 13px;
 	font-weight: 800;
+}
+
+.initials-field .field-error {
+	grid-column: 2;
+	color: #9c2f27;
+	font-weight: 700;
 }
 
 .initials-field input {
@@ -201,7 +266,7 @@
 
 .product-price {
 	margin-right: auto;
-	color: var(--gold);
+	color: var(--gold-ink);
 	font-size: 28px;
 }
 
@@ -216,11 +281,17 @@
 .quantity-stepper button {
 	display: grid;
 	place-items: center;
-	width: 36px;
-	height: 36px;
+	width: 44px;
+	height: 44px;
 	border: 0;
 	background: transparent;
 	cursor: pointer;
+}
+
+.quantity-stepper button:disabled,
+.quantity-row button:disabled {
+	cursor: not-allowed;
+	opacity: 0.45;
 }
 
 .quantity-stepper span {

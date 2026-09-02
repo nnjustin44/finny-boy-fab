@@ -82,7 +82,7 @@ export default function Contact() {
 				<form className='contact-form' onSubmit={handleSubmit}>
 					<div className='form-row'>
 						<label>
-							Name
+							Name (required)
 							<input
 								type='text'
 								name='name'
@@ -93,7 +93,7 @@ export default function Contact() {
 							/>
 						</label>
 						<label>
-							Email
+							Email (required)
 							<input
 								type='email'
 								name='email'
@@ -117,7 +117,7 @@ export default function Contact() {
 						</select>
 					</label>
 					<label>
-						Message
+						Message (required)
 						<textarea
 							name='message'
 							value={form.message}
@@ -127,10 +127,10 @@ export default function Contact() {
 						/>
 					</label>
 					<button className='button primary' type='submit'>
-						<MessageSquareText size={18} /> Send inquiry
+						<MessageSquareText size={18} aria-hidden='true' /> Send inquiry
 					</button>
 					{submittedWithoutEmail && (
-						<p className='contact-status' role='status'>
+						<p className='contact-status' role='alert'>
 							The contact email is not configured yet. Add
 							<code> VITE_CONTACT_EMAIL </code>
 							to enable this form.

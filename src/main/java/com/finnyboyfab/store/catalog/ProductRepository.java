@@ -1,7 +1,9 @@
 package com.finnyboyfab.store.catalog;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class ProductRepository {
                     productImages("end-grain-cutting-board"),
                     "Maple, cherry, or walnut",
                     List.of("Maple", "Cherry", "Walnut"),
-                    "18 in x 13 in x 1.75 in",
+                    "18 in x 12 in x 1.75 in",
                     22500,
                     Map.of("Maple", 22500, "Cherry", 22500, "Walnut", 27500),
                     8,
@@ -36,13 +38,13 @@ public class ProductRepository {
             new Product(
                     "board-maple-walnut-server",
                     "maple-walnut-serving-board",
-                    "Maple & Walnut Serving Board",
+                    "Live Edge Maple Serving Board",
                     "A long striped board for bread, cheese, and table service.",
-                    "Alternating maple and walnut strips give this serving board a crisp, modern rhythm without feeling busy.",
+                    "Ambrosia maple give this serving board a beautiful, unique, pattern without feeling busy. The natural pattern insures that every board is one of a kind and will never be repeated.",
                     "Sized for gatherings and weeknight dinners alike, with a comfortable rounded handle and hanging hole.",
                     "/images/products/maple-walnut-serving-board/maple-walnut-server.png",
                     productImages("maple-walnut-serving-board"),
-                    "Hard maple and walnut",
+                    "Hard ambrosia maple",
                     List.of(),
                     "26 in x 7 in x 0.875 in",
                     12800,
@@ -86,14 +88,16 @@ public class ProductRepository {
             Resource[] resources = new PathMatchingResourcePatternResolver()
                     .getResources("classpath:/static/images/products/" + folderName + "/*");
 
-            return List.of(resources).stream()
+            return Arrays.stream(resources)
                     .filter(Resource::isReadable)
                     .map(ProductRepository::filename)
                     .filter(ProductRepository::isImage)
-                    .sorted(Comparator.comparing(ProductRepository::gallerySortKey)
-                            .thenComparing(filename -> filename))
+                    .sorted(Comparator.comparingInt(ProductRepository::gallerySortOrder)
+                            .thenComparing(Comparator.naturalOrder()))
                     .map(filename -> "/images/products/" + folderName + "/" + filename)
                     .toList();
+        } catch (FileNotFoundException exception) {
+            return List.of();
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -111,12 +115,12 @@ public class ProductRepository {
                 || normalizedFilename.endsWith(".webp");
     }
 
-    private static String gallerySortKey(String filename) {
+    private static int gallerySortOrder(String filename) {
         return switch (filename) {
-            case "walnut-end-grain.png" -> "000-" + filename;
-            case "walnut-endgrain-2.png" -> "001-" + filename;
-            case "walnut-end-grain-3.png" -> "002-" + filename;
-            default -> "100-" + filename;
+            case "walnut-end-grain.png" -> 0;
+            case "walnut-endgrain-2.png" -> 1;
+            case "walnut-end-grain-3.png" -> 2;
+            default -> 100;
         };
     }
 }

@@ -24,6 +24,7 @@
 
 .filter-control select {
 	width: 100%;
+	min-height: 44px;
 	border: 0;
 	background: transparent;
 	color: var(--navy);
@@ -77,7 +78,7 @@
 
 .special-projects .text-link {
 	margin-top: 8px;
-	color: var(--gold);
+	color: var(--gold-light);
 }
 
 .special-projects-card {
@@ -94,7 +95,7 @@
 
 .special-projects-card svg {
 	margin-bottom: 18px;
-	color: var(--gold);
+	color: var(--gold-light);
 }
 
 .special-projects-card p {

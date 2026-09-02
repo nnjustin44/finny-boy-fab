@@ -4,6 +4,10 @@
 	gap: 24px;
 }
 
+.product-grid > [role='listitem'] {
+	min-width: 0;
+}
+
 @media (max-width: 900px) {
 	.product-grid {
 		grid-template-columns: 1fr;

@@ -103,7 +103,7 @@ export default function CustomInquiry() {
 				<form className='custom-inquiry-form' onSubmit={handleSubmit}>
 					<div className='form-row'>
 						<label>
-							Name
+							Name (required)
 							<input
 								type='text'
 								name='name'
@@ -114,7 +114,7 @@ export default function CustomInquiry() {
 							/>
 						</label>
 						<label>
-							Email
+							Email (required)
 							<input
 								type='email'
 								name='email'
@@ -134,6 +134,7 @@ export default function CustomInquiry() {
 								value={form.phone}
 								onChange={(event) => updateField('phone', event.target.value)}
 								autoComplete='tel'
+								inputMode='tel'
 							/>
 						</label>
 						<label>
@@ -197,7 +198,7 @@ export default function CustomInquiry() {
 						</label>
 					</div>
 					<label>
-						Project notes
+						Project notes (required)
 						<textarea
 							name='message'
 							value={form.message}
@@ -208,10 +209,10 @@ export default function CustomInquiry() {
 						/>
 					</label>
 					<button className='button primary' type='submit'>
-						<Send size={18} /> Send custom inquiry
+						<Send size={18} aria-hidden='true' /> Send custom inquiry
 					</button>
 					{submittedWithoutEmail && (
-						<p className='inquiry-status' role='status'>
+						<p className='inquiry-status' role='alert'>
 							The contact email is not configured yet. Add
 							<code> VITE_CONTACT_EMAIL </code>
 							to enable this form.

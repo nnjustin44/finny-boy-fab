@@ -38,10 +38,13 @@ export default function CheckoutSuccessPage() {
 	}, [searchParams, startNewCart]);
 
 	return (
-		<section className='section page-section checkout-result'>
+		<section
+			className='section page-section checkout-result'
+			aria-live='polite'
+			aria-busy={paymentState === 'loading'}>
 			{paymentState === 'loading' && (
 				<>
-					<LoaderCircle className='checkout-spinner' size={42} />
+					<LoaderCircle className='checkout-spinner' size={42} aria-hidden='true' />
 					<p className='eyebrow'>Verifying payment</p>
 					<h1>One moment</h1>
 				</>
@@ -49,7 +52,7 @@ export default function CheckoutSuccessPage() {
 
 			{paymentState === 'paid' && (
 				<>
-					<CheckCircle2 size={42} />
+					<CheckCircle2 size={42} aria-hidden='true' />
 					<p className='eyebrow'>Payment received</p>
 					<h1>Thank you for your order</h1>
 					<p>A receipt and order details will be sent to the email entered at checkout.</p>
@@ -61,7 +64,7 @@ export default function CheckoutSuccessPage() {
 
 			{paymentState === 'processing' && (
 				<>
-					<LoaderCircle className='checkout-spinner' size={42} />
+					<LoaderCircle className='checkout-spinner' size={42} aria-hidden='true' />
 					<p className='eyebrow'>Payment processing</p>
 					<h1>Your payment is still processing</h1>
 					<p>Stripe will email you when the payment is complete.</p>
@@ -70,7 +73,7 @@ export default function CheckoutSuccessPage() {
 
 			{paymentState === 'error' && (
 				<>
-					<CircleAlert size={42} />
+					<CircleAlert size={42} aria-hidden='true' />
 					<p className='eyebrow'>Unable to verify payment</p>
 					<h1>Check your payment status</h1>
 					<p>Your cart has been kept. Return to it to try again.</p>

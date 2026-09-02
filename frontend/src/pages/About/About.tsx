@@ -31,7 +31,7 @@ export default function About() {
 				<img
 					className='family-pic'
 					src='/images/family-pic.jpg'
-					alt='Finny Boy Fab'
+					alt='Justin and Leigh Ann with Finn, the family behind Finny Boy Fab'
 				/>
 			</div>
 		</section>

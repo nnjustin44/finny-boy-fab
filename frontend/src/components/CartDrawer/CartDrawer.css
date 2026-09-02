@@ -5,6 +5,10 @@
 	pointer-events: none;
 }
 
+.cart-drawer[hidden] {
+	display: none;
+}
+
 .cart-drawer.open {
 	pointer-events: auto;
 }
@@ -84,7 +88,7 @@
 
 .cart-line p,
 .cart-summary strong {
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .cart-summary {

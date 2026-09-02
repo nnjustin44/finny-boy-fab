@@ -12,6 +12,8 @@ public class SpaController {
             "/shop",
             "/about",
             "/learn",
+            "/contact",
+            "/custom-inquiry",
             "/cart",
             "/checkout/success",
             "/products/{slug}"

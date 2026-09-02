@@ -55,7 +55,7 @@ public class StripeCheckoutService {
             if (session.getUrl() == null || session.getUrl().isBlank()) {
                 throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Stripe did not return a checkout URL");
             }
-            return new CheckoutSessionResponse(session.getId(), session.getUrl());
+            return new CheckoutSessionResponse(session.getUrl());
         } catch (StripeException exception) {
             throw stripeFailure("Unable to start Stripe Checkout", exception);
         }
@@ -64,7 +64,7 @@ public class StripeCheckoutService {
     public CheckoutStatusResponse getSessionStatus(String sessionId) {
         try {
             Session session = requireClient().v1().checkout().sessions().retrieve(sessionId);
-            return new CheckoutStatusResponse(session.getId(), session.getStatus(), session.getPaymentStatus());
+            return new CheckoutStatusResponse(session.getStatus(), session.getPaymentStatus());
         } catch (StripeException exception) {
             throw stripeFailure("Unable to verify Stripe Checkout", exception);
         }

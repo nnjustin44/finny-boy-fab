@@ -1,18 +1,11 @@
-import {
-	ArrowLeft,
-	Check,
-	ChevronLeft,
-	ChevronRight,
-	Minus,
-	Plus,
-	ShoppingBag,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ArrowLeft, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProduct } from '../../lib/api';
 import { useCart } from '../../lib/cart';
 import { formatMoney } from '../../lib/format';
 import type { Product } from '../../types/store';
+import ProductGallery from './ProductGallery';
 import './ProductPage.css';
 
 export default function ProductPage() {
@@ -23,48 +16,35 @@ export default function ProductPage() {
 	const [rubberFeet, setRubberFeet] = useState(false);
 	const [initialsEngraving, setInitialsEngraving] = useState(false);
 	const [initials, setInitials] = useState('');
-	const [activeImageIndex, setActiveImageIndex] = useState(0);
-	const [displayedImageIndex, setDisplayedImageIndex] = useState(0);
-	const [imageAspectRatios, setImageAspectRatios] = useState<
-		Record<string, number>
-	>({});
-	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 	const { addItem, loading } = useCart();
+	const productImages = useMemo(() => {
+		if (!product) return [];
+
+		// Preserve original de-dup behavior, but keep imageUrl first and
+		// drop any accidental duplicate from imageUrls rather than relying
+		// on Set's insertion-order semantics.
+		return [
+			product.imageUrl,
+			...product.imageUrls.filter((url) => url !== product.imageUrl),
+		];
+	}, [product]);
 
 	useEffect(() => {
 		if (slug) {
 			getProduct(slug).then((nextProduct) => {
 				setProduct(nextProduct);
-				setSelectedWood(nextProduct.woodOptions?.[0] ?? '');
-				setActiveImageIndex(0);
-				setDisplayedImageIndex(0);
-				setLoadedImages({});
+				setSelectedWood(nextProduct.woodOptions[0] ?? '');
 			});
 		}
 	}, [slug]);
 
-	const productImages = product
-		? Array.from(new Set([product.imageUrl, ...(product.imageUrls ?? [])]))
-		: [];
-	const productImagesKey = productImages.join('|');
-	const activeImage = productImages[activeImageIndex] ?? product?.imageUrl ?? '';
-
 	useEffect(() => {
-		productImages.forEach((imageUrl) => {
-			const image = new Image();
-			image.src = imageUrl;
-		});
-	}, [productImagesKey]);
-
-	useEffect(() => {
-		if (activeImage && loadedImages[activeImage]) {
-			setDisplayedImageIndex(activeImageIndex);
-		}
-	}, [activeImage, activeImageIndex, loadedImages]);
+		if (product) document.title = `${product.name} | Finny Boy Fab`;
+	}, [product]);
 
 	if (!product) {
 		return (
-			<section className='section page-section'>
+			<section className='section page-section' aria-busy='true' aria-live='polite'>
 				<p className='eyebrow'>Loading</p>
 				<h1>Preparing product details</h1>
 			</section>
@@ -74,88 +54,24 @@ export default function ProductPage() {
 	const addOnPriceCents =
 		(rubberFeet ? 1000 : 0) + (initialsEngraving ? 1000 : 0);
 	const selectedWoodPriceCents = selectedWood
-		? (product.woodPriceCents?.[selectedWood] ?? product.priceCents)
+		? (product.woodPriceCents[selectedWood] ?? product.priceCents)
 		: product.priceCents;
 	const unitPriceCents = selectedWoodPriceCents + addOnPriceCents;
 	const trimmedInitials = initials.trim().toUpperCase();
 	const requiresInitials = initialsEngraving && trimmedInitials.length === 0;
-	const displayedImage = productImages[displayedImageIndex] ?? activeImage;
-	const activeImageAspectRatio = imageAspectRatios[displayedImage] ?? 3 / 2;
-	const hasMultipleImages = productImages.length > 1;
-	const rememberImageLoad = (imageUrl: string, image: HTMLImageElement) => {
-		if (image.naturalWidth > 0 && image.naturalHeight > 0) {
-			setImageAspectRatios((currentRatios) => ({
-				...currentRatios,
-				[imageUrl]: image.naturalWidth / image.naturalHeight,
-			}));
-		}
-
-		setLoadedImages((currentImages) => ({
-			...currentImages,
-			[imageUrl]: true,
-		}));
-
-		if (imageUrl === activeImage) {
-			setDisplayedImageIndex(activeImageIndex);
-		}
-	};
-	const showPreviousImage = () => {
-		setActiveImageIndex((currentIndex) =>
-			currentIndex === 0 ? productImages.length - 1 : currentIndex - 1,
-		);
-	};
-	const showNextImage = () => {
-		setActiveImageIndex((currentIndex) =>
-			currentIndex === productImages.length - 1 ? 0 : currentIndex + 1,
-		);
-	};
 
 	return (
 		<section className='section product-detail'>
 			<Link
 				className='text-link back-link'
 				to='/shop'>
-				<ArrowLeft size={16} /> Back to shop
+				<ArrowLeft size={16} aria-hidden='true' /> Back to shop
 			</Link>
 			<div className='product-detail-grid'>
-				<div
-					className='product-detail-image'
-					style={{ aspectRatio: activeImageAspectRatio }}>
-					{productImages.map((imageUrl, imageIndex) => (
-						<img
-							key={imageUrl}
-							className={
-								imageIndex === displayedImageIndex ? 'active' : ''
-							}
-							src={imageUrl}
-							alt={imageIndex === activeImageIndex ? product.name : ''}
-							aria-hidden={imageIndex !== activeImageIndex}
-							loading='eager'
-							decoding='async'
-							onLoad={(event) =>
-								rememberImageLoad(imageUrl, event.currentTarget)
-							}
-						/>
-					))}
-					{hasMultipleImages && (
-						<>
-							<button
-								className='product-image-control previous'
-								type='button'
-								onClick={showPreviousImage}
-								aria-label='Show previous product image'>
-								<ChevronLeft size={24} />
-							</button>
-							<button
-								className='product-image-control next'
-								type='button'
-								onClick={showNextImage}
-								aria-label='Show next product image'>
-								<ChevronRight size={24} />
-							</button>
-						</>
-					)}
-				</div>
+				<ProductGallery
+					images={productImages}
+					altText={product.name}
+				/>
 				<div className='product-detail-copy'>
 					<p className='eyebrow'>{product.wood}</p>
 					<h1>{product.name}</h1>
@@ -169,20 +85,19 @@ export default function ProductPage() {
 					<ul className='detail-list'>
 						{product.details.map((detail) => (
 							<li key={detail}>
-								<Check size={17} /> {detail}
+								<Check size={17} aria-hidden='true' /> {detail}
 							</li>
 						))}
 					</ul>
-					<div
-						className='customization-panel'
-						aria-label='Board customization'>
-						{(product.woodOptions?.length ?? 0) > 0 && (
+					<fieldset className='customization-panel'>
+						<legend className='sr-only'>Board customization</legend>
+						{product.woodOptions.length > 0 && (
 							<label className='wood-field'>
 								<span>Wood</span>
 								<select
 									value={selectedWood}
 									onChange={(event) => setSelectedWood(event.target.value)}>
-									{product.woodOptions?.map((wood) => (
+									{product.woodOptions.map((wood) => (
 										<option
 											key={wood}
 											value={wood}>
@@ -222,10 +137,14 @@ export default function ProductPage() {
 						<label className='initials-field'>
 							<span>Initials</span>
 							<input
+								id='product-initials'
 								type='text'
 								value={initials}
 								maxLength={3}
 								disabled={!initialsEngraving}
+								required={initialsEngraving}
+								aria-invalid={requiresInitials}
+								aria-describedby={initialsEngraving ? 'initials-help' : undefined}
 								placeholder='ABC'
 								onChange={(event) =>
 									setInitials(
@@ -233,10 +152,15 @@ export default function ProductPage() {
 									)
 								}
 							/>
+							{initialsEngraving && (
+								<small id='initials-help' className={requiresInitials ? 'field-error' : undefined}>
+									Enter 1 to 3 letters.
+								</small>
+							)}
 						</label>
-					</div>
+					</fieldset>
 					<div className='purchase-row'>
-						<strong className='product-price'>
+						<strong className='product-price' aria-live='polite' aria-atomic='true'>
 							{formatMoney(unitPriceCents)}
 						</strong>
 						<div
@@ -245,17 +169,19 @@ export default function ProductPage() {
 							<button
 								type='button'
 								onClick={() => setQuantity(Math.max(1, quantity - 1))}
+								disabled={quantity <= 1}
 								aria-label='Decrease quantity'>
-								<Minus size={16} />
+								<Minus size={16} aria-hidden='true' />
 							</button>
-							<span>{quantity}</span>
+							<span aria-live='polite' aria-atomic='true'>{quantity}</span>
 							<button
 								type='button'
 								onClick={() =>
 									setQuantity(Math.min(product.inventory, quantity + 1))
 								}
+								disabled={quantity >= product.inventory}
 								aria-label='Increase quantity'>
-								<Plus size={16} />
+								<Plus size={16} aria-hidden='true' />
 							</button>
 						</div>
 						<button
@@ -270,7 +196,7 @@ export default function ProductPage() {
 									initials: trimmedInitials,
 								})
 							}>
-							<ShoppingBag size={18} /> Add to cart
+							<ShoppingBag size={18} aria-hidden='true' /> {loading ? 'Adding…' : 'Add to cart'}
 						</button>
 					</div>
 				</div>

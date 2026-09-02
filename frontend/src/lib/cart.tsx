@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode
 } from "react";
@@ -38,6 +39,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const initializationStarted = useRef(false);
 
   const resetCart = useCallback(async () => {
     const nextCart = await createCart();
@@ -64,6 +66,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart, resetCart]);
 
   useEffect(() => {
+    if (initializationStarted.current) {
+      return;
+    }
+    initializationStarted.current = true;
     void ensureCart();
   }, [ensureCart]);
 

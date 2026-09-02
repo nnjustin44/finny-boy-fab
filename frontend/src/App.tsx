@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import About from "./pages/About";
 import CartPage from "./pages/CartPage";
@@ -24,6 +24,19 @@ export default function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
+        <Route
+          path="*"
+          element={
+            <section className="section page-section">
+              <p className="eyebrow">Page not found</p>
+              <h1>That page is not in the shop.</h1>
+              <p>The link may be out of date, or the page may have moved.</p>
+              <Link className="button primary" to="/">
+                Return home
+              </Link>
+            </section>
+          }
+        />
       </Routes>
     </Layout>
   );

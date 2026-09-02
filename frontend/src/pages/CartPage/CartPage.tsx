@@ -49,7 +49,7 @@ export default function CartPage() {
 				</div>
 			) : (
 				<div className='cart-page-grid'>
-					<div className='cart-page-lines'>
+					<div className='cart-page-lines' aria-live='polite' aria-busy={loading}>
 						{cart.items.map((line) => (
 							<article
 								className='cart-page-line'
@@ -82,24 +82,24 @@ export default function CartPage() {
 											type='button'
 											onClick={() => updateItem(line.id, line.quantity - 1)}
 											disabled={loading}
-											aria-label='Decrease quantity'>
-											<Minus size={15} />
+											aria-label={`Decrease ${line.product.name} quantity`}>
+											<Minus size={15} aria-hidden='true' />
 										</button>
-										<span>{line.quantity}</span>
+										<span aria-live='polite' aria-atomic='true'>{line.quantity}</span>
 										<button
 											type='button'
 											onClick={() => updateItem(line.id, line.quantity + 1)}
 											disabled={loading}
-											aria-label='Increase quantity'>
-											<Plus size={15} />
+											aria-label={`Increase ${line.product.name} quantity`}>
+											<Plus size={15} aria-hidden='true' />
 										</button>
 										<button
 											type='button'
 											className='trash-button'
 											onClick={() => removeItem(line.id)}
 											disabled={loading}
-											aria-label='Remove item'>
-											<Trash2 size={15} />
+											aria-label={`Remove ${line.product.name} from cart`}>
+											<Trash2 size={15} aria-hidden='true' />
 										</button>
 									</div>
 								</div>
@@ -157,8 +157,9 @@ export default function CartPage() {
 							className='button primary full'
 							type='button'
 							disabled={loading || !termsAcknowledged}
+							aria-describedby='order-consent-heading'
 							onClick={handleCheckout}>
-							{loading ? 'Opening checkout...' : 'Checkout securely'}
+							{loading ? 'Opening checkout…' : 'Checkout securely'}
 						</button>
 						{checkoutError && (
 							<p className='checkout-error' role='alert'>

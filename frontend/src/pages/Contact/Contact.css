@@ -25,7 +25,7 @@
 
 .contact-callout svg {
 	margin-bottom: 18px;
-	color: var(--gold);
+	color: var(--gold-light);
 }
 
 .contact-callout h2 {
@@ -133,7 +133,7 @@
 
 .contact-details svg {
 	margin-bottom: 16px;
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .contact-details h3 {
@@ -149,6 +149,8 @@
 
 .contact-details a {
 	font-weight: 800;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
 @media (max-width: 900px) {

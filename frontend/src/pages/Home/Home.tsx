@@ -20,7 +20,7 @@ export default function Home() {
 			<section className='hero'>
 				<img
 					src='/images/hero-boards.png'
-					alt='Collection of handcrafted hardwood cutting boards'
+					alt='Handcrafted walnut and maple cutting boards arranged on a workbench'
 				/>
 				<div className='hero-copy'>
 					<p className='eyebrow'>Handcrafted Hardwood Boards</p>
@@ -32,7 +32,7 @@ export default function Home() {
 					<Link
 						className='button primary'
 						to='/shop'>
-						Shop boards <ArrowRight size={18} />
+						Shop boards <ArrowRight size={18} aria-hidden='true' />
 					</Link>
 				</div>
 			</section>
@@ -44,20 +44,21 @@ export default function Home() {
 					<img
 						className='american-made-home '
 						src='/images/american-made.png'
-						alt='Finny Boy Fab'
+						alt='Heirloom quality, proudly American made and handmade in North Carolina'
 					/>
 				</div>
 				<p className='intro-paragraph'>
+					Food is so much more than just what we eat. It's in the quiet
+					breakfast mornings, the loving “Have you eaten yet?”, the joyful
+					celebrations, and even the gentle times of sorrow. We can’t make the
+					meals for you, but we can make the boards that help hold all those
+					precious moments.
+					<br /> <br />
 					Every board begins with hand selected hardwoods for it's grain
 					pattern, beauty, and uniqueness. All boards are meticulously assembled
 					using non-toxic materials and finished with the highest quality
 					food-grade virgin coconut oil and beeswax. The result is simple,
-					beautiful, and substantial enough to leave on display.
-					<br /> <br /> Food is so much more than just what we eat. It's in the
-					quiet breakfast mornings, the loving “Have you eaten yet?”, the joyful
-					celebrations, and even the gentle times of sorrow. We can’t make the
-					meals for you, but we can make the boards that help hold all those
-					precious moments.
+					beautiful, and built to last for generations.
 				</p>
 			</section>
 
@@ -70,13 +71,13 @@ export default function Home() {
 					<Link
 						className='text-link'
 						to='/shop'>
-						View all <ArrowRight size={16} />
+						View all boards <ArrowRight size={16} aria-hidden='true' />
 					</Link>
 				</div>
-				<ProductGrid products={products} />
+				<ProductGrid products={products} headingLevel={3} />
 			</section>
 
-			<section className='feature-strip'>
+			<section className='feature-strip' aria-label='Why choose Finny Boy Fab'>
 				<div>
 					<span>
 						<Droplet

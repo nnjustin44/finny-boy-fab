@@ -37,11 +37,11 @@ export default function Shop() {
 						long-term care.
 					</p>
 				</div>
-				<div
-					className='filter-control'
-					aria-label='Filter products by wood'>
-					<SlidersHorizontal size={17} />
+				<div className='filter-control'>
+					<SlidersHorizontal size={17} aria-hidden='true' />
+					<label className='sr-only' htmlFor='wood-filter'>Filter products by wood</label>
 					<select
+						id='wood-filter'
 						value={wood}
 						onChange={(event) => setWood(event.target.value)}>
 						{woods.map((option) => (
@@ -50,6 +50,9 @@ export default function Shop() {
 					</select>
 				</div>
 			</div>
+			<p className='sr-only' role='status' aria-live='polite'>
+				{filtered.length} {filtered.length === 1 ? 'product' : 'products'} shown
+			</p>
 			<ProductGrid products={filtered} />
 			<section
 				className='special-projects'
@@ -65,7 +68,7 @@ export default function Shop() {
 					<Link
 						className='text-link'
 						to='/custom-inquiry'>
-						Start a custom inquiry <ArrowRight size={16} />
+						Start a custom inquiry <ArrowRight size={16} aria-hidden='true' />
 					</Link>
 				</div>
 				<div className='special-projects-card'>

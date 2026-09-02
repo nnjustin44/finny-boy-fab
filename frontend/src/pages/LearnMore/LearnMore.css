@@ -22,7 +22,7 @@
 }
 
 .care-grid svg {
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .care-grid h2 {
@@ -101,7 +101,7 @@
 
 .transparency-kicker {
 	margin: 0 0 12px;
-	color: var(--gold);
+	color: var(--gold-light);
 	font-size: 11px;
 	font-weight: 800;
 	letter-spacing: 0.14em;
@@ -141,13 +141,13 @@
 	box-sizing: content-box;
 	border: 1px solid rgba(200, 169, 110, 0.42);
 	border-radius: 50%;
-	color: var(--gold);
+	color: var(--gold-light);
 }
 
 .transparency-points span {
 	display: block;
 	margin-bottom: 6px;
-	color: var(--gold);
+	color: var(--gold-light);
 	font-size: 12px;
 	font-weight: 800;
 	letter-spacing: 0.1em;
@@ -181,6 +181,7 @@
 
 .band-copy {
 	align-self: center;
+	min-width: 0;
 }
 
 .band-copy h2 {
@@ -219,7 +220,7 @@
 
 .source-list-label {
 	margin: 0 0 4px;
-	color: rgba(255, 255, 255, 0.5);
+	color: rgba(255, 255, 255, 0.74);
 	font-size: 11px;
 	font-weight: 800;
 	letter-spacing: 0.1em;
@@ -268,7 +269,20 @@
 @media (max-width: 900px) {
 	.care-grid,
 	.material-band {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.transparency-band,
+	.branded-band,
+	.branded-band:not(.media-first) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.transparency-copy,
+	.band-copy {
+		width: 100%;
+		max-width: 100%;
+		overflow-wrap: break-word;
 	}
 
 	.transparency-image img {
@@ -277,6 +291,22 @@
 
 	.band-media-frame img {
 		min-height: 280px;
+	}
+
+	.construction-band .band-copy {
+		order: 1;
+	}
+
+	.construction-band .band-media-frame {
+		order: 2;
+		align-self: end;
+	}
+
+	.construction-band .band-media-frame img {
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 3 / 2;
+		object-fit: contain;
 	}
 }
 

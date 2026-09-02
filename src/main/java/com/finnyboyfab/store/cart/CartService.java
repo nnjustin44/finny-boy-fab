@@ -24,6 +24,7 @@ public class CartService {
 
     private final ProductRepository productRepository;
     private final Map<String, Map<String, CartLineItem>> carts = new ConcurrentHashMap<>();
+
     public CartService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -35,7 +36,6 @@ public class CartService {
     }
 
     public CartResponse getCart(String cartId) {
-        ensureCart(cartId);
         return toResponse(cartId);
     }
 
@@ -151,7 +151,7 @@ public class CartService {
     private CartResponse toResponse(String cartId) {
         Map<String, CartLineItem> cart = ensureCart(cartId);
         var lines = cart.values().stream()
-                .map(line -> productRepository.findById(line.productId())
+                .flatMap(line -> productRepository.findById(line.productId()).stream()
                         .map(product -> {
                             int addOnCents = addOnPriceCents(line);
                             return new CartLineResponse(
@@ -165,9 +165,7 @@ public class CartService {
                                     addOnCents * line.quantity(),
                                     (product.priceCentsForWood(line.selectedWood()) + addOnCents) * line.quantity()
                             );
-                        })
-                        .orElse(null))
-                .filter(line -> line != null)
+                        }))
                 .toList();
         int subtotal = lines.stream().mapToInt(CartLineResponse::lineTotalCents).sum();
         int itemCount = lines.stream().mapToInt(CartLineResponse::quantity).sum();

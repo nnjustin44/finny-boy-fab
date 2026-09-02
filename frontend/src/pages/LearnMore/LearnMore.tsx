@@ -62,7 +62,7 @@ export default function LearnMore() {
 					const Icon = item.icon;
 					return (
 						<article key={item.title}>
-							<Icon size={24} />
+							<Icon size={24} aria-hidden='true' />
 							<h2>{item.title}</h2>
 							<p>{item.body}</p>
 						</article>
@@ -80,7 +80,7 @@ export default function LearnMore() {
 					</p>
 					<div className='transparency-points'>
 						<article>
-							<Leaf size={22} />
+							<Leaf size={22} aria-hidden='true' />
 							<div>
 								<span>Wood Type</span>
 								<p>
@@ -93,7 +93,7 @@ export default function LearnMore() {
 							</div>
 						</article>
 						<article>
-							<ShieldCheck size={22} />
+							<ShieldCheck size={22} aria-hidden='true' />
 							<div>
 								<span>Glue Type</span>
 								<p>
@@ -106,7 +106,7 @@ export default function LearnMore() {
 							</div>
 						</article>
 						<article>
-							<Sparkles size={22} />
+							<Sparkles size={22} aria-hidden='true' />
 							<div>
 								<span>Finish</span>
 								<p>
@@ -157,13 +157,14 @@ export default function LearnMore() {
 								rel='noreferrer'>
 								<span className='source-tag'>{link.source}</span>
 								<span className='source-title'>{link.title}</span>
+								<span className='sr-only'> (opens in a new tab)</span>
 							</a>
 						))}
 					</div>
 				</div>
 			</div>
 
-			<div className='material-band branded-band'>
+			<div className='material-band branded-band construction-band'>
 				<div className='band-copy'>
 					<p className='transparency-kicker'>Board construction</p>
 					<h2>End grain vs. Edge Grain</h2>
@@ -183,7 +184,7 @@ export default function LearnMore() {
 				<div className='band-media-frame'>
 					<img
 						src='/images/wood-grain.webp'
-						alt='Walnut end-grain cutting board'
+						alt='Illustration comparing wood fibers to a bundle of straws and showing face, edge, and end grain cuts'
 					/>
 				</div>
 			</div>

@@ -13,6 +13,14 @@
 	object-fit: cover;
 }
 
+.hero::after {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(12, 29, 43, 0.9) 0%, rgba(12, 29, 43, 0.66) 42%, rgba(12, 29, 43, 0.08) 75%);
+	content: '';
+	pointer-events: none;
+}
+
 .hero-copy {
 	position: absolute;
 	z-index: 1;
@@ -22,6 +30,10 @@
 	transform: translateY(-50%);
 }
 
+.hero-copy .eyebrow {
+	color: var(--gold-light);
+}
+
 .hero-copy p:not(.eyebrow) {
 	max-width: 470px;
 	color: var(--white);
@@ -29,7 +41,7 @@
 }
 
 .hero-copy h1 {
-	color: var(--slate);
+	color: var(--white);
 }
 
 .intro-band {
@@ -77,7 +89,7 @@
 	height: 48px;
 	border: 1px solid rgba(200, 169, 110, 0.38);
 	border-radius: 50%;
-	color: var(--gold);
+	color: var(--gold-light);
 	background: rgba(255, 255, 255, 0.05);
 }
 

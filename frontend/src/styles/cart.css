@@ -9,8 +9,8 @@
 .quantity-row button {
 	display: grid;
 	place-items: center;
-	width: 36px;
-	height: 36px;
+	width: 44px;
+	height: 44px;
 	border: 0;
 	background: transparent;
 	cursor: pointer;
@@ -23,7 +23,7 @@
 }
 
 .trash-button {
-	color: var(--gold);
+	color: #9c2f27;
 }
 
 .cart-line-options {

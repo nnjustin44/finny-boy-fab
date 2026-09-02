@@ -13,6 +13,23 @@
 	backdrop-filter: blur(16px);
 }
 
+.skip-link {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	z-index: 100;
+	padding: 12px 16px;
+	border-radius: 4px;
+	background: var(--navy);
+	color: var(--white);
+	font-weight: 800;
+	transform: translateY(-160%);
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
 .brand {
 	grid-column: 2;
 	align-self: center;
@@ -53,6 +70,10 @@
 .main-nav a:hover {
 	color: var(--navy);
 	border-color: var(--gold);
+}
+
+.main-nav a.active {
+	font-weight: 800;
 }
 
 .header-actions {
@@ -97,7 +118,7 @@
 
 .footer-brand {
 	margin-bottom: 8px;
-	color: var(--gold);
+	color: var(--gold-light);
 	font-weight: 800;
 }
 
@@ -110,6 +131,15 @@
 	display: flex;
 	gap: 24px;
 	font-weight: 800;
+}
+
+.footer-links a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 32px;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
 }
 
 .finn-approved {
@@ -146,17 +176,27 @@
 	.main-nav {
 		position: fixed;
 		top: 76px;
-		left: 0;
-		right: 0;
+		left: auto;
+		right: 20px;
+		width: min(280px, calc(100vw - 40px));
 		display: none;
 		padding: 22px;
-		border-bottom: 1px solid var(--line);
+		border: 1px solid var(--line);
+		border-top: 0;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
 		background: var(--paper);
+		box-shadow: 0 18px 42px rgba(25, 48, 70, 0.14);
 	}
 
 	.main-nav.open {
 		display: grid;
 		justify-items: start;
+		gap: 4px;
+	}
+
+	.main-nav a {
+		width: 100%;
 	}
 
 	.icon-button.menu-toggle {
@@ -168,5 +208,9 @@
 	.site-footer {
 		display: grid;
 		padding: 30px 22px;
+	}
+
+	.footer-links {
+		flex-wrap: wrap;
 	}
 }

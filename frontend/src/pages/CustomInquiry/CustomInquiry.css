@@ -43,7 +43,7 @@
 
 .inquiry-process svg {
 	flex: 0 0 auto;
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .custom-inquiry-layout {
@@ -143,7 +143,7 @@
 
 .custom-inquiry-details svg {
 	margin-bottom: 16px;
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .custom-inquiry-details h2 {

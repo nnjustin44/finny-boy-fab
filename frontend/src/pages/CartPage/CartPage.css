@@ -1,5 +1,4 @@
-.cart-empty-page,
-.confirmation {
+.cart-empty-page {
 	display: grid;
 	place-items: center;
 	align-content: center;
@@ -42,7 +41,7 @@
 
 .cart-page-line > strong,
 .order-summary strong {
-	color: var(--gold);
+	color: var(--gold-ink);
 }
 
 .order-summary {
@@ -111,7 +110,7 @@
 	width: 18px;
 	height: 18px;
 	margin: 1px 0 0;
-	accent-color: var(--gold);
+	accent-color: var(--navy);
 }
 
 .checkout-error {
