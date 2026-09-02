@@ -8,3 +8,4 @@ frontend/target/
 .env
 .env.*
 .env.example
+.agents/skills/
