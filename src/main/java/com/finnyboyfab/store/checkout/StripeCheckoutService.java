@@ -1,5 +1,6 @@
 package com.finnyboyfab.store.checkout;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import com.stripe.param.checkout.SessionCreateParams;
 @Service
 public class StripeCheckoutService {
 
+    private static final String LEGAL_POLICY_VERSION = "2026-09-01";
+
     private final StripeClient stripeClient;
     private final String appBaseUrl;
 
@@ -34,6 +37,9 @@ public class StripeCheckoutService {
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setClientReferenceId(cart.id())
                 .putMetadata("cart_id", cart.id())
+                .putMetadata("legal_attestation", "accepted")
+                .putMetadata("legal_policy_version", LEGAL_POLICY_VERSION)
+                .putMetadata("legal_accepted_at", Instant.now().toString())
                 .setSuccessUrl(appBaseUrl + "/checkout/success?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl(appBaseUrl + "/cart")
                 .setShippingAddressCollection(

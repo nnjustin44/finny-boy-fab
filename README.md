@@ -11,11 +11,10 @@ MVP monolithic online store for handcrafted cutting boards.
 
 ## Local Development
 
-Run the backend:
+The application uses the `local` profile by default. Run the backend:
 
 ```bash
 export STRIPE_SECRET_KEY=sk_test_your_key_here
-export APP_BASE_URL=http://localhost:8080
 mvn spring-boot:run
 ```
 
@@ -49,16 +48,48 @@ For a one-command local launch:
 STRIPE_SECRET_KEY=sk_test_your_key_here APP_BASE_URL=http://localhost:8080 mvn spring-boot:run
 ```
 
-The backend reads these variables through `src/main/resources/application.properties`:
+The backend reads the secret through the Spring configuration files:
 
 ```properties
 stripe.secret-key=${STRIPE_SECRET_KEY:}
-stripe.app-base-url=${APP_BASE_URL:http://localhost:8080}
 ```
 
 Use a Stripe test key until the checkout flow has been verified. A production deployment should
-store `STRIPE_SECRET_KEY` in the hosting platform's secret manager and set `APP_BASE_URL` to the
-public HTTPS origin. Stripe-hosted Checkout does not require a publishable key in this frontend.
+store `STRIPE_SECRET_KEY` in the hosting platform's secret manager. The production profile defaults
+Stripe return URLs to `https://finnyboyfab.com`; `APP_BASE_URL` remains available as an override.
+Stripe-hosted Checkout does not require a publishable key in this frontend.
+
+## Environment Profiles
+
+Spring Boot loads shared settings from `application.properties` and environment-specific settings
+from these profile files:
+
+- `local` (default): `http://localhost:${PORT}` URLs (`8080` by default) and disabled
+  static-asset caching. When Vite runs separately, set `APP_BASE_URL=http://localhost:5173`.
+- `test`: stable localhost URLs with browser caching disabled.
+- `prod`: `https://finnyboyfab.com`, proxy-aware request handling, and long-lived asset caching.
+
+Run a particular profile with `SPRING_PROFILES_ACTIVE`, for example:
+
+```bash
+SPRING_PROFILES_ACTIVE=prod java -jar target/finnyboyfab-store-0.0.1-SNAPSHOT.jar
+```
+
+The Docker image activates `prod` automatically. Hosting environments may still override
+`SPRING_PROFILES_ACTIVE`, `SITE_BASE_URL`, `APP_BASE_URL`, and `PORT` when needed.
+
+## Search Engine Metadata
+
+The production profile uses `https://finnyboyfab.com` for canonical URLs, Open Graph metadata,
+JSON-LD product data, `robots.txt`, and `sitemap.xml`. `SITE_BASE_URL` can override that value for
+preview deployments:
+
+```bash
+export SITE_BASE_URL=https://preview.example.com
+```
+
+After deployment, submit `https://finnyboyfab.com/sitemap.xml` in Google Search Console. Product
+pages include `Product`, `Offer`, and breadcrumb structured data in their initial HTML response.
 
 Before fulfilling production orders, add a signed `checkout.session.completed` webhook and persist
 the order. The return page verifies what the customer sees, but Stripe webhooks must be the source

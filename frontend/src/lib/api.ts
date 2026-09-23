@@ -10,6 +10,8 @@ const jsonHeaders = {
   "Content-Type": "application/json"
 };
 
+const productRequests = new Map<string, Promise<Product>>();
+
 async function request<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
   const response = await fetch(input, init);
   if (!response.ok) {
@@ -23,7 +25,17 @@ export function getProducts() {
 }
 
 export function getProduct(slug: string) {
-  return request<Product>(`/api/products/${slug}`);
+  const cachedRequest = productRequests.get(slug);
+  if (cachedRequest) {
+    return cachedRequest;
+  }
+
+  const productRequest = request<Product>(`/api/products/${slug}`).catch((error) => {
+    productRequests.delete(slug);
+    throw error;
+  });
+  productRequests.set(slug, productRequest);
+  return productRequest;
 }
 
 export function createCart() {

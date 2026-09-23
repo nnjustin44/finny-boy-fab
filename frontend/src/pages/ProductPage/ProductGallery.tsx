@@ -173,6 +173,7 @@ export default function ProductGallery({
 					aria-hidden={imageIndex !== displayedImageIndex}
 					loading='eager'
 					decoding='async'
+					fetchPriority={imageIndex === 0 ? 'high' : 'low'}
 					onLoad={(event) => rememberImageLoad(imageUrl, event.currentTarget)}
 				/>
 			))}

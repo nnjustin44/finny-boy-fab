@@ -121,16 +121,24 @@ export default function LearnMore() {
 				</div>
 				<div className='transparency-image'>
 					<img
-						src='/images/products/end-grain-cutting-board/walnut-end-grain.png'
+						src='/images/optimized/products/end-grain-cutting-board/walnut-end-grain.jpg'
 						alt='Walnut end-grain cutting board'
+						width='1800'
+						height='1200'
+						loading='lazy'
+						decoding='async'
 					/>
 				</div>
 			</div>
 			<div className='material-band branded-band media-first'>
 				<div className='band-media-frame'>
 					<img
-						src='/images/products/maple-walnut-serving-board/maple-walnut-server.png'
+						src='/images/optimized/products/maple-walnut-serving-board/maple-walnut-server.jpg'
 						alt='Maple and walnut serving board'
+						width='1800'
+						height='1200'
+						loading='lazy'
+						decoding='async'
 					/>
 				</div>
 
@@ -185,6 +193,10 @@ export default function LearnMore() {
 					<img
 						src='/images/wood-grain.webp'
 						alt='Illustration comparing wood fibers to a bundle of straws and showing face, edge, and end grain cuts'
+						width='3000'
+						height='2000'
+						loading='lazy'
+						decoding='async'
 					/>
 				</div>
 			</div>

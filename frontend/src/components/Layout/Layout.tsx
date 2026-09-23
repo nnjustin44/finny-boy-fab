@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 're
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useCart } from '../../lib/cart';
 import CartDrawer from '../CartDrawer';
+import SeoManager from '../Seo';
 import './Layout.css';
 
 const navItems = [
@@ -23,21 +24,6 @@ export default function Layout({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		setMenuOpen(false);
-		const pageTitles: Record<string, string> = {
-			'/': 'Home',
-			'/home': 'Home',
-			'/shop': 'Shop',
-			'/about': 'Our Story',
-			'/learn': 'Board Care Guide',
-			'/contact': 'Contact',
-			'/custom-inquiry': 'Custom Inquiry',
-			'/cart': 'Cart',
-			'/checkout/success': 'Order Status',
-		};
-		const pageTitle = location.pathname.startsWith('/products/')
-			? 'Product Details'
-			: (pageTitles[location.pathname] ?? 'Page Not Found');
-		document.title = `${pageTitle} | Finny Boy Fab`;
 		if (isInitialRoute.current) {
 			isInitialRoute.current = false;
 			return;
@@ -62,6 +48,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
 	return (
 		<>
+			<SeoManager />
 			<a className='skip-link' href='#main-content' onClick={skipToMain}>
 				Skip to main content
 			</a>
@@ -87,8 +74,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 					aria-label='Finny Boy Fab home'>
 					<img
 						className='brand-logo'
-						src='/images/primary-logo-main.png'
+						src='/images/optimized/primary-logo-main.png'
 						alt='Finny Boy Fab'
+						width='720'
+						height='266'
 					/>
 				</Link>
 				<div className='header-actions'>
@@ -127,8 +116,12 @@ export default function Layout({ children }: { children: ReactNode }) {
 					</p>
 					<img
 						className='finn-approved'
-						src='/images/finn-approved.png'
+						src='/images/optimized/finn-approved.png'
 						alt='Finn approved'
+						width='680'
+						height='159'
+						loading='lazy'
+						decoding='async'
 					/>
 				</div>
 				<nav className='footer-links' aria-label='Footer'>
@@ -137,6 +130,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 					<Link to='/about'>Our Story</Link>
 					<Link to='/custom-inquiry'>Custom Inquiry</Link>
 					<Link to='/contact'>Contact</Link>
+					<Link to='/privacy'>Privacy</Link>
+					<Link to='/cookies'>Cookies</Link>
+					<Link to='/terms'>Terms</Link>
 				</nav>
 			</footer>
 

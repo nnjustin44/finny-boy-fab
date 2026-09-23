@@ -12,7 +12,7 @@ export default function ProductCard({ product, headingLevel = 2 }: { product: Pr
   return (
     <article className="product-card">
       <Link to={`/products/${product.slug}`} className="product-image-link" aria-label={product.name}>
-        <img src={product.imageUrl} alt="" />
+        <img src={product.imageUrl} alt="" loading="lazy" decoding="async" />
       </Link>
       <div className="product-card-body">
         <div>

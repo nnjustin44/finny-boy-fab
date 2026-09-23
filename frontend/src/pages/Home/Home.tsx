@@ -19,8 +19,12 @@ export default function Home() {
 		<>
 			<section className='hero'>
 				<img
-					src='/images/hero-boards.png'
+					src='/images/optimized/hero-boards.jpg'
 					alt='Handcrafted walnut and maple cutting boards arranged on a workbench'
+					width='1800'
+					height='1200'
+					fetchPriority='high'
+					decoding='async'
 				/>
 				<div className='hero-copy'>
 					<p className='eyebrow'>Handcrafted Hardwood Boards</p>
@@ -43,8 +47,12 @@ export default function Home() {
 					<h2>Premium hardwood boards proudly made in America.</h2>
 					<img
 						className='american-made-home '
-						src='/images/american-made.png'
+						src='/images/optimized/american-made.png'
 						alt='Heirloom quality, proudly American made and handmade in North Carolina'
+						width='900'
+						height='900'
+						loading='lazy'
+						decoding='async'
 					/>
 				</div>
 				<p className='intro-paragraph'>

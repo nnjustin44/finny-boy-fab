@@ -129,7 +129,10 @@
 
 .footer-links {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
 	gap: 24px;
+	max-width: 720px;
 	font-weight: 800;
 }
 
@@ -212,5 +215,6 @@
 
 	.footer-links {
 		flex-wrap: wrap;
+		justify-content: flex-start;
 	}
 }

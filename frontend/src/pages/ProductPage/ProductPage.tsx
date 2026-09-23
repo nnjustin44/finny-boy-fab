@@ -11,6 +11,7 @@ import './ProductPage.css';
 export default function ProductPage() {
 	const { slug } = useParams();
 	const [product, setProduct] = useState<Product | null>(null);
+	const [productMissing, setProductMissing] = useState(false);
 	const [quantity, setQuantity] = useState(1);
 	const [selectedWood, setSelectedWood] = useState('');
 	const [rubberFeet, setRubberFeet] = useState(false);
@@ -30,17 +31,37 @@ export default function ProductPage() {
 	}, [product]);
 
 	useEffect(() => {
+		let active = true;
 		if (slug) {
-			getProduct(slug).then((nextProduct) => {
-				setProduct(nextProduct);
-				setSelectedWood(nextProduct.woodOptions[0] ?? '');
-			});
+			setProduct(null);
+			setProductMissing(false);
+			getProduct(slug)
+				.then((nextProduct) => {
+					if (!active) return;
+					setProduct(nextProduct);
+					setSelectedWood(nextProduct.woodOptions[0] ?? '');
+				})
+				.catch(() => {
+					if (active) setProductMissing(true);
+				});
 		}
+		return () => {
+			active = false;
+		};
 	}, [slug]);
 
-	useEffect(() => {
-		if (product) document.title = `${product.name} | Finny Boy Fab`;
-	}, [product]);
+	if (productMissing) {
+		return (
+			<section className='section page-section'>
+				<p className='eyebrow'>Product not found</p>
+				<h1>That board is no longer in the shop.</h1>
+				<p>The product may have sold out or the link may be out of date.</p>
+				<Link className='button primary' to='/shop'>
+					Browse available boards
+				</Link>
+			</section>
+		);
+	}
 
 	if (!product) {
 		return (

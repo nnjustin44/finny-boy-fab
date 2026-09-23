@@ -142,22 +142,44 @@ export default function CartPage() {
 									2-3 weeks for your order to be completed.
 								</li>
 							</ol>
-							<label className='consent-check'>
+							<div className='consent-check'>
 								<input
+									id='legal-attestation'
 									type='checkbox'
+									required
+									aria-required='true'
+									aria-describedby='legal-attestation-detail'
 									checked={termsAcknowledged}
 									onChange={(event) =>
 										setTermsAcknowledged(event.target.checked)
 									}
 								/>
-								<span>I acknowledge these terms.</span>
-							</label>
+								<label htmlFor='legal-attestation'>
+									I have read and agree to the{' '}
+									<Link to='/terms' target='_blank' rel='noreferrer'>
+										Terms of Use<span className='sr-only'> (opens in a new tab)</span>
+									</Link>
+									,{' '}
+									<Link to='/privacy' target='_blank' rel='noreferrer'>
+										Privacy Policy<span className='sr-only'> (opens in a new tab)</span>
+									</Link>
+									, and{' '}
+									<Link to='/cookies' target='_blank' rel='noreferrer'>
+										Cookie Policy<span className='sr-only'> (opens in a new tab)</span>
+									</Link>
+									.
+								</label>
+							</div>
+							<p id='legal-attestation-detail' className='consent-detail'>
+								Checking this box creates an electronic agreement and is required to
+								continue to checkout.
+							</p>
 						</section>
 						<button
 							className='button primary full'
 							type='button'
 							disabled={loading || !termsAcknowledged}
-							aria-describedby='order-consent-heading'
+							aria-describedby='order-consent-heading legal-attestation-detail'
 							onClick={handleCheckout}>
 							{loading ? 'Opening checkout…' : 'Checkout securely'}
 						</button>

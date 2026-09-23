@@ -10,6 +10,7 @@ RUN mvn -B -DskipTests package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 ENV PORT=8080
+ENV SPRING_PROFILES_ACTIVE=prod
 EXPOSE 8080
 
 COPY --from=build /workspace/target/finnyboyfab-store-0.0.1-SNAPSHOT.jar app.jar

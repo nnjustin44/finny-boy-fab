@@ -30,8 +30,12 @@ export default function About() {
 			<div className='about-stat-grid'>
 				<img
 					className='family-pic'
-					src='/images/family-pic.jpg'
+					src='/images/optimized/family-pic.jpg'
 					alt='Justin and Leigh Ann with Finn, the family behind Finny Boy Fab'
+					width='1066'
+					height='1800'
+					loading='lazy'
+					decoding='async'
 				/>
 			</div>
 		</section>

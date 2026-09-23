@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import CustomInquiry from "./pages/CustomInquiry";
 import Home from "./pages/Home";
 import LearnMore from "./pages/LearnMore";
+import { CookiePolicy, PrivacyPolicy, TermsOfUse } from "./pages/Legal";
 import ProductPage from "./pages/ProductPage";
 import Shop from "./pages/Shop";
 
@@ -22,6 +23,9 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/custom-inquiry" element={<CustomInquiry />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/cookies" element={<CookiePolicy />} />
+        <Route path="/terms" element={<TermsOfUse />} />
         <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
         <Route
