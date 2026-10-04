@@ -9,7 +9,6 @@ public record CartItemRequest(
         @Min(1) @Max(99) int quantity,
         String selectedWood,
         boolean rubberFeet,
-        boolean initialsEngraving,
-        String initials
+        boolean bronzeRubberFeet
 ) {
 }

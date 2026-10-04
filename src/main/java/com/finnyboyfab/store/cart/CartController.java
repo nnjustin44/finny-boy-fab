@@ -64,7 +64,6 @@ public class CartController {
             @PathVariable String cartId,
             @RequestBody CheckoutRequest request
     ) {
-        CartResponse cart = cartService.prepareCheckout(cartId, request.termsAcknowledged());
-        return stripeCheckoutService.createSession(cart);
+        return stripeCheckoutService.createSession(cartId, request.termsAcknowledged());
     }
 }

@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.finnyboyfab.store.catalog.Product;
 import com.finnyboyfab.store.catalog.ProductRepository;
 
@@ -84,6 +84,13 @@ public class SpaController {
         }
         String slug = path.substring("/products/".length());
         return productRepository.findBySlug(slug).orElse(null);
+    }
+
+    public ResponseEntity<String> notFound() throws IOException {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_HTML)
+                .cacheControl(CacheControl.noStore()).body(renderIndex(
+                        new PageMetadata("Page Not Found | Finny Boy Fab", "The requested page could not be found.",
+                                "/404", "/images/optimized/hero-boards.jpg", false, "website"), null));
     }
 
     private PageMetadata metadataFor(String path, Product product) {
@@ -215,7 +222,7 @@ public class SpaController {
                 + rendered.substring(titleEnd + "</title>".length());
     }
 
-    private String seoMarkup(PageMetadata metadata, Product product) throws JsonProcessingException {
+    private String seoMarkup(PageMetadata metadata, Product product) throws JacksonException {
         String title = html(metadata.title());
         String description = html(metadata.description());
         String canonical = html(absoluteUrl(metadata.canonicalPath()));

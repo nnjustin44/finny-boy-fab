@@ -3,6 +3,7 @@ package com.finnyboyfab.store.newsletter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,19 +26,22 @@ public class MailchimpService {
 
     private final String apiKey;
     private final String audienceId;
+    private final boolean enabled;
     private final RestClient.Builder restClientBuilder;
 
     @Autowired
     public MailchimpService(
             @Value("${mailchimp.api-key:${MAILCHIMP_API_KEY:}}") String apiKey,
-            @Value("${mailchimp.audience-id:${MAILCHIMP_AUDIENCE_ID:}}") String audienceId
+            @Value("${mailchimp.audience-id:${MAILCHIMP_AUDIENCE_ID:}}") String audienceId,
+            @Value("${mailchimp.enabled:false}") boolean enabled
     ) {
-        this(apiKey, audienceId, RestClient.builder());
+        this(apiKey, audienceId, enabled, clientBuilder());
     }
 
-    MailchimpService(String apiKey, String audienceId, RestClient.Builder restClientBuilder) {
+    MailchimpService(String apiKey, String audienceId, boolean enabled, RestClient.Builder restClientBuilder) {
         this.apiKey = apiKey == null ? "" : apiKey.trim();
         this.audienceId = audienceId == null ? "" : audienceId.trim();
+        this.enabled = enabled;
         this.restClientBuilder = restClientBuilder;
     }
 
@@ -46,7 +52,8 @@ public class MailchimpService {
         String subscriberHash = subscriberHash(email);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("email_address", email);
-        body.put("status_if_new", "subscribed");
+        // Mailchimp sends a confirmation message; arbitrary addresses are never silently subscribed.
+        body.put("status_if_new", "pending");
 
         Map<String, String> mergeFields = mergeFields(request);
         if (!mergeFields.isEmpty()) {
@@ -64,6 +71,8 @@ public class MailchimpService {
             return new NewsletterSubscribeResponse("subscribed");
         } catch (RestClientResponseException ex) {
             throw mailchimpFailure(ex);
+        } catch (RestClientException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Mailchimp subscription failed", ex);
         }
     }
 
@@ -78,6 +87,9 @@ public class MailchimpService {
     }
 
     private void ensureConfigured() {
+        if (!enabled) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Newsletter signup is not enabled");
+        }
         if (apiKey.isBlank()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "MAILCHIMP_API_KEY is not configured");
         }
@@ -85,6 +97,13 @@ public class MailchimpService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "MAILCHIMP_AUDIENCE_ID is not configured");
         }
         serverPrefix(apiKey);
+    }
+
+    private static RestClient.Builder clientBuilder() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(Duration.ofSeconds(5));
+        factory.setReadTimeout(Duration.ofSeconds(10));
+        return RestClient.builder().requestFactory(factory);
     }
 
     private ResponseStatusException mailchimpFailure(RestClientResponseException ex) {

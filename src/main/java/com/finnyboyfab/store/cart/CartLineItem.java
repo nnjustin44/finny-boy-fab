@@ -6,10 +6,9 @@ public record CartLineItem(
         int quantity,
         String selectedWood,
         boolean rubberFeet,
-        boolean initialsEngraving,
-        String initials
+        boolean bronzeRubberFeet
 ) {
     CartLineItem withQuantity(int nextQuantity) {
-        return new CartLineItem(id, productId, nextQuantity, selectedWood, rubberFeet, initialsEngraving, initials);
+        return new CartLineItem(id, productId, nextQuantity, selectedWood, rubberFeet, bronzeRubberFeet);
     }
 }

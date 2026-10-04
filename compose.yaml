@@ -1,0 +1,41 @@
+name: finnyboyfab
+
+services:
+  storefront:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: finnyboyfab-store:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    environment:
+      PORT: "8080"
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+      SITE_BASE_URL: "${SITE_BASE_URL:-http://localhost:8080}"
+      APP_BASE_URL: "${APP_BASE_URL:-http://localhost:8080}"
+      SUPPORT_EMAIL: "${SUPPORT_EMAIL:-finnyboyfab@gmail.com}"
+      STORE_DATA_DIR: /var/lib/finnyboyfab
+      CHECKOUT_ENABLED: "${CHECKOUT_ENABLED:-false}"
+      MADE_TO_ORDER: "${MADE_TO_ORDER:-false}"
+      LAUNCH_REVIEWED: "${LAUNCH_REVIEWED:-false}"
+      STRIPE_AUTOMATIC_TAX_ENABLED: "${STRIPE_AUTOMATIC_TAX_ENABLED:-true}"
+      STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-}"
+      STRIPE_WEBHOOK_SECRET: "${STRIPE_WEBHOOK_SECRET:-}"
+      NEWSLETTER_ENABLED: "${NEWSLETTER_ENABLED:-false}"
+      MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY:-}"
+      MAILCHIMP_AUDIENCE_ID: "${MAILCHIMP_AUDIENCE_ID:-}"
+    volumes:
+      - storefront-data:/var/lib/finnyboyfab
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+
+volumes:
+  storefront-data:

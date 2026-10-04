@@ -8,8 +8,7 @@ public record CartLineResponse(
         int quantity,
         String selectedWood,
         boolean rubberFeet,
-        boolean initialsEngraving,
-        String initials,
+        boolean bronzeRubberFeet,
         int addOnTotalCents,
         int lineTotalCents
 ) {
