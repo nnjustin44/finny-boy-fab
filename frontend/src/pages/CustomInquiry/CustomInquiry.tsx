@@ -1,9 +1,8 @@
 import { ClipboardList, Mail, Ruler, Send, Sparkles } from 'lucide-react';
 import type { FormEvent } from 'react';
 import { useMemo, useState } from 'react';
+import { useStorefrontConfig } from '../../lib/storefront';
 import './CustomInquiry.css';
-
-const contactEmail = import.meta.env.VITE_CONTACT_EMAIL as string | undefined;
 
 type CustomInquiryForm = {
 	name: string;
@@ -30,8 +29,11 @@ const initialForm: CustomInquiryForm = {
 };
 
 export default function CustomInquiry() {
+	const { config, loading, error } = useStorefrontConfig();
+	const contactEmail = config.supportEmail;
 	const [form, setForm] = useState<CustomInquiryForm>(initialForm);
 	const [submittedWithoutEmail, setSubmittedWithoutEmail] = useState(false);
+	const [emailOpened, setEmailOpened] = useState(false);
 
 	const mailtoHref = useMemo(() => {
 		if (!contactEmail) {
@@ -53,10 +55,11 @@ export default function CustomInquiry() {
 		].join('\n');
 
 		return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-	}, [form]);
+	}, [contactEmail, form]);
 
 	function updateField(field: keyof CustomInquiryForm, value: string) {
 		setSubmittedWithoutEmail(false);
+		setEmailOpened(false);
 		setForm((current) => ({ ...current, [field]: value }));
 	}
 
@@ -69,6 +72,7 @@ export default function CustomInquiry() {
 		}
 
 		window.location.href = mailtoHref;
+		setEmailOpened(true);
 	}
 
 	return (
@@ -101,6 +105,7 @@ export default function CustomInquiry() {
 
 			<div className='custom-inquiry-layout'>
 				<form className='custom-inquiry-form' onSubmit={handleSubmit}>
+					<p>This form prepares a message in your email app. Review it and press Send there; the website does not send it for you.</p>
 					<div className='form-row'>
 						<label>
 							Name (required)
@@ -208,22 +213,22 @@ export default function CustomInquiry() {
 							required
 						/>
 					</label>
-					<button className='button primary' type='submit'>
-						<Send size={18} aria-hidden='true' /> Send custom inquiry
+					<button className='button primary' type='submit' disabled={loading || !contactEmail}>
+						<Send size={18} aria-hidden='true' /> Open custom inquiry email
 					</button>
-					{submittedWithoutEmail && (
+					{(submittedWithoutEmail || error || (!loading && !contactEmail)) && (
 						<p className='inquiry-status' role='alert'>
-							The contact email is not configured yet. Add
-							<code> VITE_CONTACT_EMAIL </code>
-							to enable this form.
+							{error || 'Email inquiries are not available yet. Please check back before placing an order.'}
 						</p>
 					)}
+					{emailOpened && <p className='inquiry-status' role='status'>Your inquiry has not been sent yet. Send it from your email app. If no app opened, copy the details and email {contactEmail} directly.</p>}
 				</form>
 
 				<aside className='custom-inquiry-details'>
 					<div>
 						<Mail size={22} aria-hidden='true' />
 						<h2>What happens next</h2>
+						{contactEmail && <p>Email directly: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
 						<p>
 							We review the details, confirm feasibility, and follow up with
 							questions before any custom build is started.

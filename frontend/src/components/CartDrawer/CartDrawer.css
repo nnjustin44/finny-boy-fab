@@ -99,6 +99,24 @@
 	background: var(--white);
 }
 
+.drawer-cart-error {
+	padding: 14px 26px;
+	border-bottom: 1px solid #b86b61;
+	background: #fff5f3;
+	color: #8d2d24;
+}
+
+.drawer-cart-error p,
+.drawer-pricing-note {
+	margin: 0;
+}
+
+.drawer-pricing-note {
+	color: var(--muted) !important;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
 .cart-summary div {
 	display: flex;
 	align-items: center;

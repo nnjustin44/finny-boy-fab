@@ -1,9 +1,8 @@
 import { Mail, MapPin, MessageSquareText, Sparkles } from 'lucide-react';
 import type { FormEvent } from 'react';
 import { useMemo, useState } from 'react';
+import { useStorefrontConfig } from '../../lib/storefront';
 import './Contact.css';
-
-const contactEmail = import.meta.env.VITE_CONTACT_EMAIL as string | undefined;
 
 type ContactForm = {
 	name: string;
@@ -20,8 +19,11 @@ const initialForm: ContactForm = {
 };
 
 export default function Contact() {
+	const { config, loading, error } = useStorefrontConfig();
+	const contactEmail = config.supportEmail;
 	const [form, setForm] = useState<ContactForm>(initialForm);
 	const [submittedWithoutEmail, setSubmittedWithoutEmail] = useState(false);
+	const [emailOpened, setEmailOpened] = useState(false);
 
 	const mailtoHref = useMemo(() => {
 		if (!contactEmail) {
@@ -38,10 +40,11 @@ export default function Contact() {
 		].join('\n');
 
 		return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-	}, [form.email, form.message, form.name, form.projectType]);
+	}, [contactEmail, form.email, form.message, form.name, form.projectType]);
 
 	function updateField(field: keyof ContactForm, value: string) {
 		setSubmittedWithoutEmail(false);
+		setEmailOpened(false);
 		setForm((current) => ({ ...current, [field]: value }));
 	}
 
@@ -54,6 +57,7 @@ export default function Contact() {
 		}
 
 		window.location.href = mailtoHref;
+		setEmailOpened(true);
 	}
 
 	return (
@@ -69,7 +73,10 @@ export default function Contact() {
 					</p>
 				</div>
 				<div className='contact-callout'>
-					<Sparkles size={28} aria-hidden='true' />
+					<Sparkles
+						size={28}
+						aria-hidden='true'
+					/>
 					<h2>Special project inquiries</h2>
 					<p>
 						For one-of-one pieces, tell us what you are drawn to: serving,
@@ -79,7 +86,13 @@ export default function Contact() {
 			</div>
 
 			<div className='contact-layout'>
-				<form className='contact-form' onSubmit={handleSubmit}>
+				<form
+					className='contact-form'
+					onSubmit={handleSubmit}>
+					<p>
+						This form prepares a message in your email app. Review it and press
+						Send there; the website does not send it for you.
+					</p>
 					<div className='form-row'>
 						<label>
 							Name (required)
@@ -109,7 +122,9 @@ export default function Contact() {
 						<select
 							name='projectType'
 							value={form.projectType}
-							onChange={(event) => updateField('projectType', event.target.value)}>
+							onChange={(event) =>
+								updateField('projectType', event.target.value)
+							}>
 							<option>General question</option>
 							<option>Current order</option>
 							<option>Special project</option>
@@ -126,30 +141,55 @@ export default function Contact() {
 							required
 						/>
 					</label>
-					<button className='button primary' type='submit'>
-						<MessageSquareText size={18} aria-hidden='true' /> Send inquiry
+					<button
+						className='button primary'
+						type='submit'
+						disabled={loading || !contactEmail}>
+						<MessageSquareText
+							size={18}
+							aria-hidden='true'
+						/>{' '}
+						Open email draft
 					</button>
-					{submittedWithoutEmail && (
-						<p className='contact-status' role='alert'>
-							The contact email is not configured yet. Add
-							<code> VITE_CONTACT_EMAIL </code>
-							to enable this form.
+					{(submittedWithoutEmail || error || (!loading && !contactEmail)) && (
+						<p
+							className='contact-status'
+							role='alert'>
+							{error ||
+								'Email inquiries are not available yet. Please check back before placing an order.'}
+						</p>
+					)}
+					{emailOpened && (
+						<p
+							className='contact-status'
+							role='status'>
+							Your message has not been sent yet. Send it from your email app.
+							If no app opened, copy your message and email {contactEmail}{' '}
+							directly.
 						</p>
 					)}
 				</form>
 
-				<aside className='contact-details' aria-label='Contact details'>
+				<aside
+					className='contact-details'
+					aria-label='Contact details'>
 					<div>
-						<Mail size={22} aria-hidden='true' />
+						<Mail
+							size={22}
+							aria-hidden='true'
+						/>
 						<h3>Email</h3>
 						{contactEmail ? (
 							<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
 						) : (
-							<p>Contact email coming soon.</p>
+							<p>FinnyBoyFab@gmail.com</p>
 						)}
 					</div>
 					<div>
-						<MapPin size={22} aria-hidden='true' />
+						<MapPin
+							size={22}
+							aria-hidden='true'
+						/>
 						<h3>Shop</h3>
 						<p>Veteran-owned small shop based in North Carolina.</p>
 					</div>

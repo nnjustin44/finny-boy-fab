@@ -22,6 +22,9 @@
 }
 
 .family-pic {
+	width: min(100%, 360px);
+	height: auto;
+	justify-self: center;
 	border: 10px solid var(--gold);
 	border-radius: 5px;
 }

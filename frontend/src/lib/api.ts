@@ -12,10 +12,17 @@ const jsonHeaders = {
 
 const productRequests = new Map<string, Promise<Product>>();
 
+export class ApiError extends Error {
+  constructor(public readonly status: number, message: string) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 async function request<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
   const response = await fetch(input, init);
   if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
+    throw new ApiError(response.status, `Request failed with status ${response.status}`);
   }
   return response.json() as Promise<T>;
 }

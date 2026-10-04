@@ -1,4 +1,4 @@
-import { Menu, ShoppingBag, X } from 'lucide-react';
+import { Menu, Share, ShoppingBag, X } from 'lucide-react';
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useCart } from '../../lib/cart';
@@ -15,12 +15,38 @@ const navItems = [
 	{ label: 'Contact', to: '/contact' },
 ];
 
+const INSTALL_BANNER_DISMISSED_KEY = 'finnyboyfab-install-banner-dismissed';
+
+function shouldShowInstallBanner() {
+	const userAgent = window.navigator.userAgent;
+	const isAppleMobile =
+		/iPhone|iPad|iPod/i.test(userAgent) ||
+		(window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+	const isSafari = /Safari/i.test(userAgent) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(userAgent);
+	const isStandalone =
+		window.matchMedia('(display-mode: standalone)').matches ||
+		('standalone' in window.navigator &&
+			(window.navigator as Navigator & { standalone?: boolean }).standalone === true);
+
+	return (
+		isAppleMobile &&
+		isSafari &&
+		!isStandalone &&
+		window.localStorage.getItem(INSTALL_BANNER_DISMISSED_KEY) !== 'true'
+	);
+}
+
 export default function Layout({ children }: { children: ReactNode }) {
 	const [menuOpen, setMenuOpen] = useState(false);
+	const [showInstallBanner, setShowInstallBanner] = useState(false);
 	const { cart, openCart } = useCart();
 	const location = useLocation();
 	const mainRef = useRef<HTMLElement>(null);
 	const isInitialRoute = useRef(true);
+
+	useEffect(() => {
+		setShowInstallBanner(shouldShowInstallBanner());
+	}, []);
 
 	useEffect(() => {
 		setMenuOpen(false);
@@ -44,6 +70,11 @@ export default function Layout({ children }: { children: ReactNode }) {
 		event.preventDefault();
 		mainRef.current?.focus();
 		mainRef.current?.scrollIntoView({ block: 'start' });
+	}
+
+	function dismissInstallBanner() {
+		window.localStorage.setItem(INSTALL_BANNER_DISMISSED_KEY, 'true');
+		setShowInstallBanner(false);
 	}
 
 	return (
@@ -102,6 +133,22 @@ export default function Layout({ children }: { children: ReactNode }) {
 					</button>
 				</div>
 			</header>
+			{showInstallBanner && (
+				<aside className='install-banner' aria-label='Add Finny Boy Fab to your Home Screen'>
+					<Share className='install-banner-icon' size={20} aria-hidden='true' />
+					<p>
+						Open Finny Boy Fab like an app. Tap <strong>Share</strong>, then{' '}
+						<strong>Add to Home Screen</strong>. No App Store needed.
+					</p>
+					<button
+						className='install-banner-dismiss'
+						type='button'
+						onClick={dismissInstallBanner}
+						aria-label='Dismiss Home Screen instructions'>
+						<X size={18} aria-hidden='true' />
+					</button>
+				</aside>
+			)}
 
 			<main id='main-content' ref={mainRef} tabIndex={-1}>
 				{children}

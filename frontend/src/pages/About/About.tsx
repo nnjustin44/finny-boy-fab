@@ -9,14 +9,11 @@ export default function About() {
 				<p>
 					Finny Boy Fabrications started in our garage with a table saw, a pile
 					of wood, and our dog Finn underfoot supervising everything. We're a
-					veteran-owned small shop in North Carolina making handcrafted wood
-					products the right way — with real wood, food-safe finishes, and the
-					kind of attention to detail that comes from caring about what you put
-					your name on. This business grew out of our own journey removing
-					toxins from our household — especially around food. Every nontoxic
-					option we found was ugly and meant to be thrown away. We wanted
-					something nontoxic we could trust completely and built to last, so we
-					made it ourselves.
+					veteran-owned small shop in North Carolina making handcrafted hardwood
+					products. The business grew from our own search for a cutting board we
+					wanted to keep in our kitchen: a wooden board with a familiar shape and
+					finish. We began making boards ourselves and continue to choose the wood,
+					assemble each piece, and finish it in our workshop.
 				</p>
 				<p>
 					Every board that leaves our shop has been touched by our hands,

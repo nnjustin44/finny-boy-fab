@@ -1,26 +1,53 @@
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../lib/cart';
 import { formatMoney } from '../../lib/format';
+import { useStorefrontConfig } from '../../lib/storefront';
 import '../../styles/cart.css';
 import './CartPage.css';
 
 export default function CartPage() {
-	const { cart, checkout, removeItem, updateItem, loading } = useCart();
+	const {
+		cart,
+		checkout,
+		removeItem,
+		updateItem,
+		loading,
+		loadingCart,
+		error,
+		retryCart,
+	} = useCart();
+	const {
+		config: storefront,
+		loading: loadingStorefront,
+		error: storefrontError,
+	} = useStorefrontConfig();
 	const [termsAcknowledged, setTermsAcknowledged] = useState(false);
 	const [checkoutError, setCheckoutError] = useState<string | null>(null);
+	const [checkoutStarting, setCheckoutStarting] = useState(false);
+	const checkoutStartingRef = useRef(false);
 
 	async function handleCheckout() {
-		if (!termsAcknowledged) {
+		if (
+			!termsAcknowledged ||
+			!storefront.checkoutEnabled ||
+			checkoutStartingRef.current
+		) {
 			return;
 		}
+		checkoutStartingRef.current = true;
+		setCheckoutStarting(true);
 		setCheckoutError(null);
 		try {
 			const response = await checkout(termsAcknowledged);
 			window.location.assign(response.checkoutUrl);
 		} catch {
-			setCheckoutError('Unable to start secure checkout. Please try again.');
+			setCheckoutError(
+				'Secure checkout could not be opened. Please try again once. If it still does not open, contact us before attempting another payment.',
+			);
+			checkoutStartingRef.current = false;
+			setCheckoutStarting(false);
 		}
 	}
 
@@ -37,8 +64,36 @@ export default function CartPage() {
 					Continue shopping
 				</Link>
 			</div>
+			{error && (
+				<div
+					className='cart-error'
+					role='alert'>
+					<p>{error}</p>
+					<button
+						type='button'
+						className='text-link'
+						onClick={() => {
+							void retryCart();
+						}}>
+						Refresh cart
+					</button>
+				</div>
+			)}
 
-			{!cart || cart.items.length === 0 ? (
+			{loadingCart && !cart ? (
+				<div
+					className='cart-empty-page'
+					aria-live='polite'>
+					<p>Loading your cart…</p>
+				</div>
+			) : !cart && error ? (
+				<div className='cart-empty-page'>
+					<p>
+						Your saved cart could not be loaded. Use Refresh cart above to try
+						again.
+					</p>
+				</div>
+			) : !cart || cart.items.length === 0 ? (
 				<div className='cart-empty-page'>
 					<p>Your cart is empty.</p>
 					<Link
@@ -49,7 +104,10 @@ export default function CartPage() {
 				</div>
 			) : (
 				<div className='cart-page-grid'>
-					<div className='cart-page-lines' aria-live='polite' aria-busy={loading}>
+					<div
+						className='cart-page-lines'
+						aria-live='polite'
+						aria-busy={loading}>
 						{cart.items.map((line) => (
 							<article
 								className='cart-page-line'
@@ -66,40 +124,57 @@ export default function CartPage() {
 									<p>{line.product.dimensions}</p>
 									{(line.selectedWood ||
 										line.rubberFeet ||
-										line.initialsEngraving) && (
+										line.bronzeRubberFeet) && (
 										<div className='cart-line-options'>
 											{line.selectedWood && (
 												<span>Wood: {line.selectedWood}</span>
 											)}
 											{line.rubberFeet && <span>Rubber feet +$10</span>}
-											{line.initialsEngraving && (
-												<span>Initials engraving "{line.initials}" +$10</span>
+											{line.bronzeRubberFeet && (
+												<span>Bronze rubber feet +$20</span>
 											)}
 										</div>
 									)}
-									<div className='quantity-row'>
-										<button
-											type='button'
-											onClick={() => updateItem(line.id, line.quantity - 1)}
-											disabled={loading}
-											aria-label={`Decrease ${line.product.name} quantity`}>
-											<Minus size={15} aria-hidden='true' />
-										</button>
-										<span aria-live='polite' aria-atomic='true'>{line.quantity}</span>
-										<button
-											type='button'
-											onClick={() => updateItem(line.id, line.quantity + 1)}
-											disabled={loading}
-											aria-label={`Increase ${line.product.name} quantity`}>
-											<Plus size={15} aria-hidden='true' />
-										</button>
+									<div className='cart-line-controls'>
+										<div
+											className='quantity-row'
+											aria-label={`${line.product.name} quantity`}>
+											<button
+												type='button'
+												onClick={() => updateItem(line.id, line.quantity - 1)}
+												disabled={loading}
+												aria-label={`Decrease ${line.product.name} quantity`}>
+												<Minus
+													size={15}
+													aria-hidden='true'
+												/>
+											</button>
+											<span
+												aria-live='polite'
+												aria-atomic='true'>
+												{line.quantity}
+											</span>
+											<button
+												type='button'
+												onClick={() => updateItem(line.id, line.quantity + 1)}
+												disabled={loading}
+												aria-label={`Increase ${line.product.name} quantity`}>
+												<Plus
+													size={15}
+													aria-hidden='true'
+												/>
+											</button>
+										</div>
 										<button
 											type='button'
 											className='trash-button'
 											onClick={() => removeItem(line.id)}
 											disabled={loading}
 											aria-label={`Remove ${line.product.name} from cart`}>
-											<Trash2 size={15} aria-hidden='true' />
+											<Trash2
+												size={15}
+												aria-hidden='true'
+											/>
 										</button>
 									</div>
 								</div>
@@ -115,7 +190,7 @@ export default function CartPage() {
 							<strong>{formatMoney(cart.subtotalCents)}</strong>
 						</div>
 						<div>
-							<span>Estimated shipping</span>
+							<span>Shipping </span>
 							<strong>
 								{cart.estimatedShippingCents === 0
 									? 'Free'
@@ -123,9 +198,13 @@ export default function CartPage() {
 							</strong>
 						</div>
 						<div className='summary-total'>
-							<span>Total</span>
+							<span>Estimated total before tax</span>
 							<strong>{formatMoney(cart.totalCents)}</strong>
 						</div>
+						<p className='cart-pricing-note'>
+							Orders of $150 or more ship free. Orders under $150 ship for a
+							flat $12. Tax is calculated at checkout.
+						</p>
 						<section
 							className='order-consent'
 							aria-labelledby='order-consent-heading'>
@@ -133,13 +212,14 @@ export default function CartPage() {
 							<ol>
 								<li>
 									Wood is a natural material. Grain pattern, color, and other
-									visual details vary from board to board, so your finished piece
-									will be unique and may not look exactly like the product photos.
-									Each board is individually selected and crafted in our small shop.
+									visual details vary from board to board, so your finished
+									piece will be unique and may not look exactly like the product
+									photos. Each board is individually selected and crafted in our
+									small shop.
 								</li>
 								<li>
-									Because we continue to fulfill military obligations, please allow
-									2-3 weeks for your order to be completed.
+									Because we continue to fulfill military obligations, please
+									allow 2-3 weeks for your order to be completed.
 								</li>
 							</ol>
 							<div className='consent-check'>
@@ -156,35 +236,79 @@ export default function CartPage() {
 								/>
 								<label htmlFor='legal-attestation'>
 									I have read and agree to the{' '}
-									<Link to='/terms' target='_blank' rel='noreferrer'>
-										Terms of Use<span className='sr-only'> (opens in a new tab)</span>
+									<Link
+										to='/terms'
+										target='_blank'
+										rel='noreferrer'>
+										Terms of Use
+										<span className='sr-only'> (opens in a new tab)</span>
 									</Link>
 									,{' '}
-									<Link to='/privacy' target='_blank' rel='noreferrer'>
-										Privacy Policy<span className='sr-only'> (opens in a new tab)</span>
+									<Link
+										to='/privacy'
+										target='_blank'
+										rel='noreferrer'>
+										Privacy Policy
+										<span className='sr-only'> (opens in a new tab)</span>
 									</Link>
 									, and{' '}
-									<Link to='/cookies' target='_blank' rel='noreferrer'>
-										Cookie Policy<span className='sr-only'> (opens in a new tab)</span>
+									<Link
+										to='/cookies'
+										target='_blank'
+										rel='noreferrer'>
+										Cookie Policy
+										<span className='sr-only'> (opens in a new tab)</span>
 									</Link>
 									.
 								</label>
 							</div>
-							<p id='legal-attestation-detail' className='consent-detail'>
-								Checking this box creates an electronic agreement and is required to
-								continue to checkout.
+							<p
+								id='legal-attestation-detail'
+								className='consent-detail'>
+								Checking this box creates an electronic agreement and is
+								required to continue to checkout.
 							</p>
 						</section>
+						<p className='checkout-destination'>
+							Card, shipping, and tax details are entered securely on Stripe's
+							payment page.
+						</p>
 						<button
 							className='button primary full'
 							type='button'
-							disabled={loading || !termsAcknowledged}
+							disabled={
+								loading ||
+								checkoutStarting ||
+								loadingStorefront ||
+								!storefront.checkoutEnabled ||
+								!termsAcknowledged
+							}
 							aria-describedby='order-consent-heading legal-attestation-detail'
 							onClick={handleCheckout}>
-							{loading ? 'Opening checkout…' : 'Checkout securely'}
+							{checkoutStarting ? 'Opening checkout…' : 'Checkout securely'}
 						</button>
+						{!loadingStorefront && !storefront.checkoutEnabled && (
+							<p
+								className='checkout-error'
+								role='status'>
+								Checkout is temporarily unavailable. Please email{' '}
+								<a href={`mailto:${storefront.supportEmail}`}>
+									{storefront.supportEmail || 'finnyboyfab@gmail.com'}
+								</a>{' '}
+								if you have a question about an order.
+							</p>
+						)}
+						{storefrontError && (
+							<p
+								className='checkout-error'
+								role='alert'>
+								{storefrontError}
+							</p>
+						)}
 						{checkoutError && (
-							<p className='checkout-error' role='alert'>
+							<p
+								className='checkout-error'
+								role='alert'>
 								{checkoutError}
 							</p>
 						)}

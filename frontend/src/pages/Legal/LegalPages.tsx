@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './LegalPages.css';
 
-const EFFECTIVE_DATE = 'September 1, 2026';
+const EFFECTIVE_DATE = 'October 3, 2026';
 
 const policyLinks = [
 	{ label: 'Privacy Policy', to: '/privacy' },
@@ -81,7 +81,7 @@ export function PrivacyPolicy() {
 				<p>
 					When you place an order, we may receive your name, email address, phone
 					number, shipping and billing details, products selected, wood selection,
-					engraving details, other options, transaction status, and related order
+					hardware selections, other options, transaction status, and related order
 					information. Payment information is entered directly into Stripe's hosted
 					checkout. Finny Boy Fab does not intentionally receive or store your full
 					card number.
@@ -100,11 +100,11 @@ export function PrivacyPolicy() {
 				</p>
 				<h3>Browser and technical information</h3>
 				<p>
-					The store saves a randomly generated cart identifier in your browser's
-					local storage so it can retrieve your active cart. Our hosting and service
-					providers may also process standard technical information such as an IP
-					address, browser type, device information, request time, and diagnostic or
-					security logs.
+					The store saves a cart identifier and, on supported Apple mobile Safari
+					browsers, your choice to dismiss the install tip in your browser's local
+					storage. Our hosting and service providers may also process standard
+					technical information such as an IP address, browser type, device
+					information, request time, and diagnostic or security logs.
 				</p>
 			</section>
 
@@ -156,8 +156,9 @@ export function PrivacyPolicy() {
 					purposes described here, maintain business and tax records, resolve
 					disputes, enforce agreements, and comply with law. Retention periods vary
 					by the type of information and the service provider involved. You can clear
-					the cart identifier from your browser at any time, though doing so may make
-					the current cart unavailable on that device.
+					these local-storage entries from your browser at any time. Clearing the cart
+					identifier may make the current cart unavailable on that device; clearing the
+					install-tip preference may cause that tip to appear again.
 				</p>
 			</section>
 
@@ -230,9 +231,10 @@ export function CookiePolicy() {
 			intro='This policy explains how the Finny Boy Fab store uses browser storage and how third-party services may use cookies or similar technology.'
 			summary={
 				<p>
-					The storefront currently uses one essential local-storage item to remember
-					your cart. We do not currently set analytics, advertising, or social-media
-					cookies on this storefront.
+					The storefront uses local storage for your cart and, on supported Apple
+					mobile Safari browsers, to remember if you dismissed the install tip. We do
+					not currently set analytics, advertising, or social-media cookies on this
+					storefront.
 				</p>
 			}>
 			<section>
@@ -261,16 +263,22 @@ export function CookiePolicy() {
 						<tbody>
 							<tr>
 								<td><code>finnyboyfab.cartId</code></td>
-								<td>Essential first-party local storage</td>
+								<td>First-party local storage</td>
 								<td>Identifies and retrieves the active shopping cart.</td>
 								<td>Until you clear site data or it is replaced.</td>
+							</tr>
+							<tr>
+								<td><code>finnyboyfab-install-banner-dismissed</code></td>
+								<td>First-party local storage</td>
+								<td>Remembers that you dismissed the install tip on supported Apple mobile Safari browsers.</td>
+								<td>Until you clear site data or the preference is replaced.</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<p>
-					Because this storage is necessary to provide the cart you request, it is
-					used when you use the shopping cart. The storefront does not currently set
+					The cart entry supports the shopping cart, and the install-tip entry
+					remembers a display preference. The storefront does not currently set
 					optional analytics, advertising, or social-media cookies.
 				</p>
 			</section>
@@ -304,8 +312,10 @@ export function CookiePolicy() {
 				<p>
 					Most browsers let you inspect, delete, or block cookies and local storage.
 					Clearing <code>finnyboyfab.cartId</code> may make your current cart
-					unavailable on that device. Controls for Stripe-hosted checkout are governed
-					by Stripe and your browser settings.
+					unavailable on that device. Clearing
+					<code>finnyboyfab-install-banner-dismissed</code> may cause the install tip
+					to appear again. Controls for Stripe-hosted checkout are governed by Stripe
+					and your browser settings.
 				</p>
 			</section>
 
@@ -364,8 +374,8 @@ export function TermsOfUse() {
 					by hand and screens display color differently.
 				</p>
 				<p>
-					You are responsible for reviewing selections, initials, spelling,
-					dimensions, and other customization details before ordering. We may contact
+					You are responsible for reviewing selections, dimensions, and other
+					customization details before ordering. We may contact
 					you to clarify a custom request and may decline work we cannot safely or
 					reasonably complete.
 				</p>
@@ -389,12 +399,15 @@ export function TermsOfUse() {
 				<h2>5. Production, shipping, and delivery</h2>
 				<p>
 					Finny Boy Fab is a small shop that continues to fulfill military
-					obligations. Please allow approximately 2–3 weeks for an order to be
-					completed before shipment unless a different estimate is stated. Production
-					and delivery dates are good-faith estimates, not guarantees, and can be
-					affected by customization, material availability, carrier delays, weather,
-					and other events outside our reasonable control. Risk of loss and title
-					transfer as provided by applicable law.
+					obligations. The current production estimate is approximately 2–3 weeks
+					before shipment unless a different estimate is stated. Carrier transit is
+					additional time and varies by destination and carrier. These are estimates,
+					not guaranteed delivery dates. If we learn we cannot ship within the time
+					stated, we will notify you of the delay and provide the option to accept a
+					delay or cancel for a full, prompt refund as required by applicable law. For
+					more information, see the{' '}
+					<ExternalLink href='https://www.ftc.gov/business-guidance/resources/business-guide-ftcs-mail-internet-or-telephone-order-merchandise-rule'>FTC shipping rule guide</ExternalLink>.
+					Risk of loss and title transfer as provided by applicable law.
 				</p>
 			</section>
 
@@ -409,14 +422,30 @@ export function TermsOfUse() {
 			</section>
 
 			<section>
-				<h2>7. Returns, damage, and order concerns</h2>
+				<h2>7. Returns, warranty, damage, and order concerns</h2>
+				<h3>14-day returns</h3>
 				<p>
-					Please inspect an order when it arrives and contact us promptly about damage,
-					an incorrect item, or another concern. Eligibility for a return, replacement,
-					or refund depends on the circumstances, the condition of the item, any policy
-					presented with the sale, and applicable law. Personalized and custom-made
-					items may have different return eligibility. Nothing in these terms limits a
-					right or remedy that cannot lawfully be limited.
+					You may request a return for any board within 14 calendar days after the
+					carrier records delivery. No reason is required. Contact us with your order
+					reference before sending the board so we can provide return instructions.
+					After the returned board is received, the refund for the returned board will
+					be issued to the original payment method. Personalized and custom-made boards
+					are included in this 14-day return policy.
+				</p>
+				<h3>One-year deformation warranty</h3>
+				<p>
+					Each board is covered for one year from its delivery date against deformation
+					caused by our workmanship or construction, or by movement of the wood. Contact
+					us with the order reference and photographs of the issue so we can evaluate
+					the claim and arrange the applicable warranty resolution. This limited warranty
+					is void if the board is placed in a dishwasher. It does not limit any right or
+					remedy that cannot lawfully be limited.
+				</p>
+				<h3>Shipping damage or an incorrect item</h3>
+				<p>
+					Please inspect an order when it arrives and contact us promptly about shipping
+					damage or an incorrect item. Keep the product and packaging while we review the
+					issue. These claims are handled separately from the one-year warranty.
 				</p>
 			</section>
 

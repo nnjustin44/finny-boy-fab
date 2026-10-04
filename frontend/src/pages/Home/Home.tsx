@@ -28,7 +28,7 @@ export default function Home() {
 				/>
 				<div className='hero-copy'>
 					<p className='eyebrow'>Handcrafted Hardwood Boards</p>
-					<h1>Heirloom Quality</h1>
+					<h1>Made for Everyday Use</h1>
 					<p>
 						Shop small-batch cutting boards and serving pieces built for real
 						kitchens, quiet counters, and meals worth lingering over.
@@ -62,11 +62,9 @@ export default function Home() {
 					meals for you, but we can make the boards that help hold all those
 					precious moments.
 					<br /> <br />
-					Every board begins with hand selected hardwoods for it's grain
-					pattern, beauty, and uniqueness. All boards are meticulously assembled
-					using non-toxic materials and finished with the highest quality
-					food-grade virgin coconut oil and beeswax. The result is simple,
-					beautiful, and built to last for generations.
+					Each board is made from carefully selected hardwood, so grain and color
+					vary from piece to piece. Our current finish is a blend of virgin coconut
+					oil and beeswax; see our care guide for upkeep.
 				</p>
 			</section>
 
@@ -74,7 +72,7 @@ export default function Home() {
 				<div className='section-heading'>
 					<div>
 						<p className='eyebrow'>Featured boards</p>
-						<h2>Customer-ready MVP catalog</h2>
+						<h2>Made in our workshop</h2>
 					</div>
 					<Link
 						className='text-link'
@@ -93,10 +91,10 @@ export default function Home() {
 							aria-hidden='true'
 						/>
 					</span>
-					<h3>Food-Grade Finish</h3>
+					<h3>Oil and Beeswax Finish</h3>
 					<p>
-						Virgin Coconut oil and beeswax protect the wood while keeping care
-						simple.
+						We finish boards with a blend of virgin coconut oil and beeswax. The
+						finish can be refreshed when the surface looks dry.
 					</p>
 				</div>
 				<div>
@@ -106,9 +104,9 @@ export default function Home() {
 							aria-hidden='true'
 						/>
 					</span>
-					<h3>Built to Order</h3>
+					<h3>Small-Batch Craft</h3>
 					<p>
-						Inventory stays intentionally limited for beauty and sustainability.
+						We make hardwood boards and serving pieces in our North Carolina workshop.
 					</p>
 				</div>
 				<div>

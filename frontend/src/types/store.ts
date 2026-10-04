@@ -23,8 +23,7 @@ export type CartLine = {
   quantity: number;
   selectedWood: string;
   rubberFeet: boolean;
-  initialsEngraving: boolean;
-  initials: string;
+  bronzeRubberFeet: boolean;
   addOnTotalCents: number;
   lineTotalCents: number;
 };
@@ -32,8 +31,7 @@ export type CartLine = {
 export type CartCustomization = {
   selectedWood?: string;
   rubberFeet: boolean;
-  initialsEngraving: boolean;
-  initials: string;
+  bronzeRubberFeet: boolean;
 };
 
 export type Cart = {
@@ -47,9 +45,13 @@ export type Cart = {
 
 export type CheckoutResponse = {
   checkoutUrl: string;
+  sessionId: string;
+  cartId: string;
 };
 
 export type CheckoutStatus = {
   status: string;
   paymentStatus: string;
+  sessionId: string;
+  cartId: string | null;
 };

@@ -21,9 +21,7 @@
 	padding: 28px;
 	border: 1px solid rgba(200, 169, 110, 0.44);
 	border-radius: 6px;
-	background:
-		linear-gradient(135deg, rgba(25, 48, 70, 0.95), rgba(25, 48, 70, 0.84)),
-		url('/images/wood-grain.webp') center / cover;
+	background: var(--navy);
 	color: var(--white);
 }
 

@@ -1,7 +1,7 @@
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getProduct } from '../../lib/api';
+import { ApiError, getProduct } from '../../lib/api';
 import { useCart } from '../../lib/cart';
 import { formatMoney } from '../../lib/format';
 import type { Product } from '../../types/store';
@@ -12,12 +12,13 @@ export default function ProductPage() {
 	const { slug } = useParams();
 	const [product, setProduct] = useState<Product | null>(null);
 	const [productMissing, setProductMissing] = useState(false);
+	const [productError, setProductError] = useState(false);
+	const [productRetry, setProductRetry] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [selectedWood, setSelectedWood] = useState('');
 	const [rubberFeet, setRubberFeet] = useState(false);
-	const [initialsEngraving, setInitialsEngraving] = useState(false);
-	const [initials, setInitials] = useState('');
-	const { addItem, loading } = useCart();
+	const [bronzeRubberFeet, setBronzeRubberFeet] = useState(false);
+	const { addItem, loading, error: cartError } = useCart();
 	const productImages = useMemo(() => {
 		if (!product) return [];
 
@@ -35,20 +36,33 @@ export default function ProductPage() {
 		if (slug) {
 			setProduct(null);
 			setProductMissing(false);
+			setProductError(false);
 			getProduct(slug)
 				.then((nextProduct) => {
 					if (!active) return;
 					setProduct(nextProduct);
 					setSelectedWood(nextProduct.woodOptions[0] ?? '');
 				})
-				.catch(() => {
-					if (active) setProductMissing(true);
+				.catch((cause) => {
+					if (!active) return;
+					if (cause instanceof ApiError && cause.status === 404) setProductMissing(true);
+					else setProductError(true);
 				});
 		}
 		return () => {
 			active = false;
 		};
-	}, [slug]);
+	}, [slug, productRetry]);
+
+	if (productError) {
+		return (
+			<section className='section page-section' role='alert'>
+				<h1>Product details are unavailable</h1>
+				<p>Please try loading this board again.</p>
+				<button className='button primary' type='button' onClick={() => setProductRetry(count => count + 1)}>Try again</button>
+			</section>
+		);
+	}
 
 	if (productMissing) {
 		return (
@@ -73,14 +87,11 @@ export default function ProductPage() {
 	}
 
 	const addOnPriceCents =
-		(rubberFeet ? 1000 : 0) + (initialsEngraving ? 1000 : 0);
+		(rubberFeet ? 1000 : 0) + (bronzeRubberFeet ? 2000 : 0);
 	const selectedWoodPriceCents = selectedWood
 		? (product.woodPriceCents[selectedWood] ?? product.priceCents)
 		: product.priceCents;
 	const unitPriceCents = selectedWoodPriceCents + addOnPriceCents;
-	const trimmedInitials = initials.trim().toUpperCase();
-	const requiresInitials = initialsEngraving && trimmedInitials.length === 0;
-
 	return (
 		<section className='section product-detail'>
 			<Link
@@ -132,7 +143,10 @@ export default function ProductPage() {
 							<input
 								type='checkbox'
 								checked={rubberFeet}
-								onChange={(event) => setRubberFeet(event.target.checked)}
+								onChange={(event) => {
+									setRubberFeet(event.target.checked);
+									if (event.target.checked) setBronzeRubberFeet(false);
+								}}
 							/>
 							<span>
 								<strong>Add rubber feet</strong>
@@ -142,42 +156,16 @@ export default function ProductPage() {
 						<label className='option-row'>
 							<input
 								type='checkbox'
-								checked={initialsEngraving}
+								checked={bronzeRubberFeet}
 								onChange={(event) => {
-									setInitialsEngraving(event.target.checked);
-									if (!event.target.checked) {
-										setInitials('');
-									}
+									setBronzeRubberFeet(event.target.checked);
+									if (event.target.checked) setRubberFeet(false);
 								}}
 							/>
 							<span>
-								<strong>Add initials engraving</strong>
-								<small>+$10</small>
+								<strong>Add bronze rubber feet</strong>
+								<small>+$20</small>
 							</span>
-						</label>
-						<label className='initials-field'>
-							<span>Initials</span>
-							<input
-								id='product-initials'
-								type='text'
-								value={initials}
-								maxLength={3}
-								disabled={!initialsEngraving}
-								required={initialsEngraving}
-								aria-invalid={requiresInitials}
-								aria-describedby={initialsEngraving ? 'initials-help' : undefined}
-								placeholder='ABC'
-								onChange={(event) =>
-									setInitials(
-										event.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase(),
-									)
-								}
-							/>
-							{initialsEngraving && (
-								<small id='initials-help' className={requiresInitials ? 'field-error' : undefined}>
-									Enter 1 to 3 letters.
-								</small>
-							)}
 						</label>
 					</fieldset>
 					<div className='purchase-row'>
@@ -208,19 +196,24 @@ export default function ProductPage() {
 						<button
 							className='button primary'
 							type='button'
-							disabled={loading || requiresInitials}
+							disabled={loading}
 							onClick={() =>
 								addItem(product.id, quantity, {
 									selectedWood,
 									rubberFeet,
-									initialsEngraving,
-									initials: trimmedInitials,
+									bronzeRubberFeet,
 								})
 							}>
 							<ShoppingBag size={18} aria-hidden='true' /> {loading ? 'Adding…' : 'Add to cart'}
 						</button>
 					</div>
-				</div>
+					{cartError && <p className='product-cart-error' role='alert'>{cartError}</p>}
+					<p className='product-policy-note'>
+						14-day returns, no reason required. One-year warranty against deformation
+						caused by our workmanship or wood movement. The warranty is void if the board
+						is placed in a dishwasher. <Link to='/terms'>Read the full policy.</Link>
+					</p>
+					</div>
 			</div>
 		</section>
 	);

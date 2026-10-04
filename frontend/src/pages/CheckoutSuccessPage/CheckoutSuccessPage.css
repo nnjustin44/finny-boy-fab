@@ -17,6 +17,20 @@
 	animation: checkout-spin 900ms linear infinite;
 }
 
+.checkout-reference {
+	max-width: min(100%, 650px) !important;
+	padding: 10px 14px;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: var(--white);
+	font-size: 12px;
+	overflow-wrap: anywhere;
+}
+
+.checkout-reference code {
+	font-size: inherit;
+}
+
 @keyframes checkout-spin {
 	to {
 		transform: rotate(360deg);
